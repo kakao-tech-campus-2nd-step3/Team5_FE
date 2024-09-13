@@ -6,11 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,css,md}'",
-    "prettier:check": "prettier --check '**/*.{js,jsx,ts,tsx,css,md}'",
-    "preview": "vite preview"
+    "format:fix": "prettier --write --ignore-path .gitignore .",
+    "format": "prettier --check --ignore-path .gitignore ."
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
