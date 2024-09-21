@@ -1,6 +1,6 @@
 import { Reset } from 'styled-reset';
 
-import './App.css';
+import '@/App.css';
 
 function App() {
   return (
