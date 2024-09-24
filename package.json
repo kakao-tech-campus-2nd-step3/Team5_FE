@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite",
-    "start:msw": "VITE_RUN_MSW=true vite",
+    "dev": "vite",
+    "dev:msw": "VITE_RUN_MSW=true vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
