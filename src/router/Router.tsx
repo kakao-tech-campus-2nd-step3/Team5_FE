@@ -11,7 +11,6 @@ import ErrorPage from '@/pages/ErrorPage';
 import RootPage from '@/pages/RootPage';
 import MainPage from '@/pages/main/index';
 
-
 type AppRouteObject = (IndexRouteObject | NonIndexRouteObject) & {
   children?: AppRouteObject[];
 };
@@ -31,14 +30,27 @@ const routesWithAsyncBoundary = (
 ): AppRouteObject[] => {
   return routes.map((route) => {
     const { element, children, ...rest } = route;
-    return {
-      ...rest,
-      element: (
-        <AsyncBoundary pendingFallback={<LoadingView />}>
-          {element}
-        </AsyncBoundary>
-      ),
-    } as AppRouteObject;
+
+    if ('index' in route) {
+      return {
+        ...rest,
+        element: (
+          <AsyncBoundary pendingFallback={<LoadingView />}>
+            {element}
+          </AsyncBoundary>
+        ),
+      } as AppRouteObject;
+    } else {
+      return {
+        ...rest,
+        element: (
+          <AsyncBoundary pendingFallback={<LoadingView />}>
+            {element}
+          </AsyncBoundary>
+        ),
+        children: children ? routesWithAsyncBoundary(children) : undefined,
+      } as AppRouteObject;
+    }
   });
 };
 

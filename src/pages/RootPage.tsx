@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 
 const RootPage = () => {
   return (
-    <div>RootPage</div>
-  )
-}
+    <>
+      <div>RootPage</div>
+      <Outlet />
+    </>
+  );
+};
 
-export default RootPage
+export default RootPage;
