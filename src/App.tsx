@@ -1,12 +1,14 @@
+import { RouterProvider } from 'react-router-dom';
+
 import { Reset } from 'styled-reset';
 
-import './App.css';
+import { Router } from '@/router/Router';
 
 function App() {
   return (
     <>
       <Reset />
-      <h1>초기 프로젝트 세팅</h1>
+      <RouterProvider router={Router} />
     </>
   );
 }
