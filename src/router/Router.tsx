@@ -9,7 +9,8 @@ import { LoadingView } from '@/components/common/view/LoadingView';
 
 import ErrorPage from '@/pages/ErrorPage';
 import RootPage from '@/pages/RootPage';
-import MainPage from '@/pages/main/MainPage';
+import MainPage from '@/pages/main/index';
+
 
 type AppRouteObject = (IndexRouteObject | NonIndexRouteObject) & {
   children?: AppRouteObject[];
