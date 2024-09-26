@@ -13,19 +13,22 @@ interface ResetRef {
   reset?(): void;
 }
 
-export const AsyncBoundary = forwardRef(function AsyncBoundary(
-  { pendingFallback, rejectedFallback, children }: Props,
-  resetRef: Ref<ResetRef>
-) {
-  const ref = useRef<ErrorBoundary | null>(null);
+export const AsyncBoundary = forwardRef(
+  (
+    { pendingFallback, rejectedFallback, children }: Props,
+    resetRef: Ref<ResetRef>
+  ) => {
+    const ref = useRef<ErrorBoundary | null>(null);
 
-  useImperativeHandle(resetRef, () => ({
-    reset: () => ref.current?.resetErrorBoundary(),
-  }));
+    useImperativeHandle(resetRef, () => ({
+      reset: () => ref.current?.resetErrorBoundary(),
+    }));
 
-  return (
-    <ErrorBoundary ref={ref} fallback={rejectedFallback ?? <></>}>
-      <Suspense fallback={pendingFallback ?? <></>}>{children}</Suspense>
-    </ErrorBoundary>
-  );
-});
+    return (
+      <ErrorBoundary ref={ref} fallback={rejectedFallback ?? <></>}>
+        <Suspense fallback={pendingFallback ?? <></>}>{children}</Suspense>
+      </ErrorBoundary>
+    );
+  }
+);
+

@@ -23,5 +23,6 @@ const Wrapper = styled.div<Pick<Props, 'size'>>`
   height: ${({ size }) => size}px;
   border-radius: 50%;
   border-left-color: #999;
+
   animation: ${spin} 1s linear infinite;
 `;
