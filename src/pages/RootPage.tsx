@@ -1,10 +1,12 @@
 import { Outlet } from 'react-router-dom';
-
 import styled from 'styled-components';
+
+import Sidebar from '@/components/feature/sidebar';
 
 const RootPage = () => {
   return (
     <RootContainer>
+      <Sidebar />
       <RootWrapper>
         <Outlet />
       </RootWrapper>
