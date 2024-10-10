@@ -1,9 +1,9 @@
-import React from 'react'
+import Header from '@/components/feature/header'
 
 const MainPage = () => {
   return (
-    <div>MainPage</div>
+    <Header />
   )
-}
+};
 
 export default MainPage
