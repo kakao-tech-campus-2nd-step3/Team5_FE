@@ -1,5 +1,4 @@
-import ShortsGrid from '@/components/feature/grid/ShortsGrid';
-import { Header } from '@/components';
+import { Header, ShortsGrid } from '@/components';
 
 const MainPage = () => {
   return (
@@ -7,8 +6,7 @@ const MainPage = () => {
       <Header />
       <ShortsGrid />
     </>
-  )
+  );
 };
 
 export default MainPage;
-
