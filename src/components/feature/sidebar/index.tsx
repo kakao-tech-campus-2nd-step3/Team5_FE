@@ -5,6 +5,7 @@ import Logo from '@/assets/logo.png';
 
 const SidebarContainer = styled.div`
   width: 228px;
+  min-width: 228px;
   background-color: #f9f9f9;
   padding: 20px;
   height: 100vh;
