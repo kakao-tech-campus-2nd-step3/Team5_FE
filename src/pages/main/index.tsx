@@ -1,9 +1,13 @@
+import ShortsGrid from '@/components/feature/grid/ShortsGrid';
 import Header from '@/components/feature/header'
 
 const MainPage = () => {
   return (
-    <Header />
+    <>
+      <Header />
+      <ShortsGrid />
+    </>
   )
 };
 
-export default MainPage
+export default MainPage;
