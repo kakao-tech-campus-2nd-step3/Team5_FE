@@ -1,9 +1,7 @@
-import Header from '@/components/feature/header'
+import { Header } from '@/components';
 
 const MainPage = () => {
-  return (
-    <Header />
-  )
+  return <Header />;
 };
 
-export default MainPage
+export default MainPage;
