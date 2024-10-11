@@ -9,9 +9,9 @@ type Props = {
   pendingFallback?: ComponentProps<typeof Suspense>['fallback'];
 };
 
-interface ResetRef {
+type ResetRef = {
   reset?(): void;
-}
+};
 
 export const AsyncBoundary = forwardRef(
   (
@@ -31,4 +31,3 @@ export const AsyncBoundary = forwardRef(
     );
   }
 );
-
