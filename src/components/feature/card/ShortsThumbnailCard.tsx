@@ -11,20 +11,17 @@ interface ShortsCardProps {
   };
   title: string;
   timeAgo: string;
-  category?: string;
 }
 
 const ShortsThumbnailCard: React.FC<ShortsCardProps> = ({
   image,
   title,
   timeAgo,
-  category,
 }) => {
   return (
     <Card>
       <LazyLoadImg image={image} />
       <Title>{title}</Title>
-      {category && <div>{category}</div>}
       <TimeAgo>{timeAgo}</TimeAgo>
     </Card>
   );
@@ -46,13 +43,13 @@ const Card = styled.div`
 
 const Title = styled.h3`
   font-size: 16px;
-  margin: 10px 0;
+  margin: 15px 0;
   text-align: center;
 `;
 
 const TimeAgo = styled.p`
   font-size: 14px;
   color: #666;
-  margin-top: 10px;
+  margin-top: 5px;
   margin-bottom: 10px;
 `;
