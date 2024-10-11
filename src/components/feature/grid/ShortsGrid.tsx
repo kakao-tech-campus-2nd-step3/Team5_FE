@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import ShortsThumbnailCard from '@/components/feature/card/ShortsThumbnailCard';
@@ -48,7 +48,16 @@ const shortsData = [
 ];
 
 const ShortsGrid = () => {
-  const constraintsRef = useRef(null);
+  const constraintsRef = useRef<HTMLDivElement>(null);
+  const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0 });
+
+  useEffect(() => {
+    if (constraintsRef.current) {
+      const sliderWidth = constraintsRef.current.scrollWidth;
+      const containerWidth = constraintsRef.current.offsetWidth;
+      setDragConstraints({ left: -(sliderWidth - containerWidth), right: 0 });
+    }
+  }, []);
 
   return (
     <SliderWrapper>
@@ -57,7 +66,8 @@ const ShortsGrid = () => {
       >
         <Slider
           drag="x"
-          dragConstraints={constraintsRef}
+          dragConstraints={dragConstraints}
+          dragMomentum={true}
           initial={{ x: 0 }}
           animate={{ x: 0 }}
           whileTap={{ cursor: 'grabbing' }}
