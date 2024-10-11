@@ -85,6 +85,23 @@ const SliderWrapper = styled.div`
   padding: 20px;
   position: relative;
   overflow: hidden;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    z-index: 1;
+  }
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  }
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  }
 `;
 
 const SliderContainer = styled(motion.div)`
