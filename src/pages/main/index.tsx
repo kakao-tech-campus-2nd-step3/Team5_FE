@@ -1,9 +1,12 @@
-import React from 'react'
+import { Header, ShortsGrid } from '@/components';
 
 const MainPage = () => {
   return (
-    <div>MainPage</div>
-  )
-}
+    <>
+      <Header />
+      <ShortsGrid />
+    </>
+  );
+};
 
-export default MainPage
+export default MainPage;
