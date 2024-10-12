@@ -7,7 +7,7 @@ const queryClient = new QueryClient();
 
 async function deferRender() {
   if (import.meta.env.VITE_RUN_MSW === 'true') {
-    const { worker } = await import('./mocks/browser');
+    const { worker } = await import('@/mocks/Browser');
     await worker.start();
   }
 }
