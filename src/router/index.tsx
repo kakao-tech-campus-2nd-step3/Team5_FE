@@ -5,8 +5,9 @@ import {
   NonIndexRouteObject,
 } from 'react-router-dom';
 
-import { LoadingView } from '@/components/common';
-import * as CommonUI from '@/components/common';
+import { AsyncBoundary, LoadingView } from '@/components';
+
+import { RouterPath } from './path';
 
 const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
 const RootPage = lazy(() => import('@/pages/RootPage'));
@@ -19,13 +20,13 @@ type AppRouteObject = (IndexRouteObject | NonIndexRouteObject) & {
 
 const routesConfig: AppRouteObject[] = [
   {
-    path: '/',
+    path: RouterPath.root,
     element: <RootPage />,
     id: 'root',
-    errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <MainPage /> },
-      { path: '/auto', element: <AutoShortsPage /> },
+      { index: true, path: RouterPath.main, element: <MainPage /> },
+      { path: RouterPath.auto, element: <AutoShortsPage /> },
+      { path: RouterPath.notFound, element: <ErrorPage /> },
     ],
   },
 ];
@@ -40,24 +41,24 @@ const routesWithAsyncBoundary = (
       return {
         ...rest,
         element: (
-          <CommonUI.AsyncBoundary
+          <AsyncBoundary
             pendingFallback={<LoadingView />}
             rejectedFallback={<>Load Error</>}
           >
             {element}
-          </CommonUI.AsyncBoundary>
+          </AsyncBoundary>
         ),
       } as AppRouteObject;
     } else {
       return {
         ...rest,
         element: (
-          <CommonUI.AsyncBoundary
+          <AsyncBoundary
             pendingFallback={<LoadingView />}
             rejectedFallback={<>Load Error</>}
           >
             {element}
-          </CommonUI.AsyncBoundary>
+          </AsyncBoundary>
         ),
         children: children ? routesWithAsyncBoundary(children) : undefined,
       } as AppRouteObject;
