@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { LazyLoadImg } from '@/components/common/img/LazyLoadingImg';
+import { LazyLoadImg } from '@/components';
 
 interface ShortsCardProps {
   image: {

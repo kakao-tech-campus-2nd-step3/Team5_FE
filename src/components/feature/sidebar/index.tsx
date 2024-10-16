@@ -1,6 +1,18 @@
+import {
+  FaHome,
+  FaRobot,
+  FaClipboardList,
+  FaUtensils,
+  FaPlane,
+  FaGamepad,
+  FaMusic,
+  FaBasketballBall,
+} from 'react-icons/fa';
+
 import styled from 'styled-components';
-import { FaHome, FaRobot, FaClipboardList, FaUtensils, FaPlane, FaGamepad, FaMusic, FaBasketballBall } from 'react-icons/fa';
-import { Button } from '@/components/common/button';
+
+import { Button } from '@/components';
+
 import Logo from '@/assets/logo.png';
 
 const SidebarContainer = styled.div`
@@ -44,52 +56,56 @@ const Sidebar = () => {
   return (
     <SidebarContainer>
       <LogoContainer>
-        <img src={Logo} alt="logo" width="100" />
+        <img src={Logo} alt='logo' width='100' />
       </LogoContainer>
 
       <NavItem>
-        <CustomButton variant="ghost" size="default" icon={<FaHome />}>
+        <CustomButton variant='ghost' size='default' icon={<FaHome />}>
           HOME
         </CustomButton>
       </NavItem>
       <NavItem>
-        <CustomButton variant="ghost" size="default" icon={<FaRobot />}>
+        <CustomButton variant='ghost' size='default' icon={<FaRobot />}>
           쇼츠 자동화
         </CustomButton>
       </NavItem>
       <NavItem>
-        <CustomButton variant="ghost" size="default" icon={<FaClipboardList />}>
+        <CustomButton variant='ghost' size='default' icon={<FaClipboardList />}>
           애널리틱스
         </CustomButton>
       </NavItem>
 
       <br />
-      <Divider />  
+      <Divider />
       <br />
 
       <CategoryTitle>카테고리</CategoryTitle>
       <NavItem>
-        <CustomButton variant="ghost" size="default" icon={<FaUtensils />}>
+        <CustomButton variant='ghost' size='default' icon={<FaUtensils />}>
           음식
         </CustomButton>
       </NavItem>
       <NavItem>
-        <CustomButton variant="ghost" size="default" icon={<FaPlane />}>
+        <CustomButton variant='ghost' size='default' icon={<FaPlane />}>
           여행
         </CustomButton>
       </NavItem>
       <NavItem>
-        <CustomButton variant="ghost" size="default" icon={<FaGamepad />}>
+        <CustomButton variant='ghost' size='default' icon={<FaGamepad />}>
           게임
         </CustomButton>
       </NavItem>
       <NavItem>
-        <CustomButton variant="ghost" size="default" icon={<FaMusic />}>
+        <CustomButton variant='ghost' size='default' icon={<FaMusic />}>
           음악
         </CustomButton>
       </NavItem>
       <NavItem>
-        <CustomButton variant="ghost" size="default" icon={<FaBasketballBall />}>
+        <CustomButton
+          variant='ghost'
+          size='default'
+          icon={<FaBasketballBall />}
+        >
           스포츠
         </CustomButton>
       </NavItem>
