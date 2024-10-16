@@ -3,10 +3,9 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { z } from 'zod';
 
-import * as CommonUI from '@/components/common';
+import { Form, Button } from '@/components';
 
-import { FormSchema } from '@/pages/auto/utils/FormSchema';
-
+import { FormSchema } from '../utils';
 import ConvertField from './ConvertField';
 import LinkCard from './LinkCard';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,19 +27,19 @@ const ConvertForm = () => {
   }
 
   return (
-    <CommonUI.Form {...form}>
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormContainer>
           <FormWrapper>
             <ConvertField form={form} />
             <LinkCard />
           </FormWrapper>
-          <CommonUI.Button variant='default' type='submit'>
+          <Button variant='default' type='submit'>
             변환하기
-          </CommonUI.Button>
+          </Button>
         </FormContainer>
       </form>
-    </CommonUI.Form>
+    </Form>
   );
 };
 

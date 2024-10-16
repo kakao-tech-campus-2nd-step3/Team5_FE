@@ -4,9 +4,9 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-} from '@/components/common/avatar';
-import { Button } from '@/components/common/button';
-import { Input } from '@/components/common/input';
+  Input,
+  Button,
+} from '@/components';
 
 const Header = () => {
   return (

@@ -1,49 +1,52 @@
 import { useState, useRef, useEffect } from 'react';
+
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import ShortsThumbnailCard from '@/components/feature/card/ShortsThumbnailCard';
+
+import { ShortsThumbnailCard } from '@/components';
+
 import shortsImg from '@/assets/shorts_img.png';
 
 const shortsData = [
   {
     image: { src: shortsImg, alt: 'Shorts' },
     title: '인기 쇼츠1',
-    timeAgo: '2일 전'
+    timeAgo: '2일 전',
   },
   {
     image: { src: shortsImg, alt: 'Shorts' },
     title: '인기 쇼츠2',
-    timeAgo: '4시간 전'
+    timeAgo: '4시간 전',
   },
   {
     image: { src: shortsImg, alt: 'Shorts' },
     title: '인기 쇼츠3',
-    timeAgo: '11시간 전'
+    timeAgo: '11시간 전',
   },
   {
     image: { src: shortsImg, alt: 'Shorts' },
     title: '인기 쇼츠4',
-    timeAgo: '1시간 전'
+    timeAgo: '1시간 전',
   },
   {
     image: { src: shortsImg, alt: 'Shorts' },
     title: '인기 쇼츠5',
-    timeAgo: '1시간 전'
+    timeAgo: '1시간 전',
   },
   {
     image: { src: shortsImg, alt: 'Shorts' },
     title: '인기 쇼츠6',
-    timeAgo: '1시간 전'
+    timeAgo: '1시간 전',
   },
   {
     image: { src: shortsImg, alt: 'Shorts' },
     title: '인기 쇼츠7',
-    timeAgo: '1시간 전'
+    timeAgo: '1시간 전',
   },
   {
     image: { src: shortsImg, alt: 'Shorts' },
     title: '인기 쇼츠8',
-    timeAgo: '1시간 전'
+    timeAgo: '1시간 전',
   },
 ];
 
@@ -61,11 +64,9 @@ const ShortsGrid = () => {
 
   return (
     <SliderWrapper>
-      <SliderContainer
-        ref={constraintsRef}
-      >
+      <SliderContainer ref={constraintsRef}>
         <Slider
-          drag="x"
+          drag='x'
           dragConstraints={dragConstraints}
           dragMomentum={true}
           initial={{ x: 0 }}
@@ -73,7 +74,7 @@ const ShortsGrid = () => {
           whileTap={{ cursor: 'grabbing' }}
         >
           {shortsData.map((shorts, index) => (
-            <motion.div key={index} className="card-wrapper">
+            <motion.div key={index} className='card-wrapper'>
               <ShortsThumbnailCard
                 image={shorts.image}
                 title={shorts.title}
@@ -106,23 +107,31 @@ const SliderWrapper = styled.div`
   }
   &::before {
     left: 0;
-    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0)
+    );
   }
   &::after {
     right: 0;
-    background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    background: linear-gradient(
+      to left,
+      rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0)
+    );
   }
 `;
 
 const SliderContainer = styled(motion.div)`
   overflow: 'hidden';
-  cursor: 'grab'
+  cursor: 'grab';
 `;
 
 const Slider = styled(motion.div)`
   display: flex;
-  gap: 30px; 
+  gap: 30px;
   .card-wrapper {
-    min-width: 180px; 
+    min-width: 180px;
   }
 `;
