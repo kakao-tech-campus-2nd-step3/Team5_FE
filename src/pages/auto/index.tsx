@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { ConvertForm, Progress } from './components';
+import { ConvertForm, Progress } from '@/pages/auto/components';
 
 const AutoShortsPage = () => {
   return (
