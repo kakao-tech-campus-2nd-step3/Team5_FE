@@ -1,4 +1,6 @@
 export * from './card';
 export * from './form';
-export * from './progress';
+export * from './process';
 export * from './field';
+export * from './loading';
+export * from './final';
