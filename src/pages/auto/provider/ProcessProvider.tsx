@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 // 타입 정의
-type ProcessState = 'initial' | 'progress' | 'final';
+export type ProcessState = 'initial' | 'progress' | 'final';
 type ProcessContextType = {
   processState: ProcessState;
   setProcessState: (state: ProcessState) => void;
