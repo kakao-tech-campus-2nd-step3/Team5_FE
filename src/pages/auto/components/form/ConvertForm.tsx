@@ -5,9 +5,9 @@ import { z } from 'zod';
 
 import { Form, Button } from '@/components';
 
-import { FormSchema } from '../utils';
-import ConvertField from './ConvertField';
-import LinkCard from './LinkCard';
+import { LinkCard, ConvertField } from '@/pages/auto/components';
+import { FormSchema } from '@/pages/auto/utils';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const ConvertForm = () => {
