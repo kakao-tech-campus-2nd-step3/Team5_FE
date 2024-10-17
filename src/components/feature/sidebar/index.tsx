@@ -8,12 +8,16 @@ import {
   FaMusic,
   FaBasketballBall,
 } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 
 import { Button } from '@/components';
+
+import { useProcessContext } from '@/pages/auto/provider';
+import { ProcessState } from '@/pages/auto/provider';
 
 import Logo from '@/assets/logo.png';
 
@@ -54,69 +58,66 @@ const Divider = styled.div`
   margin: 10px 0;
 `;
 
+const navItems: Array<{
+  label: string;
+  icon: JSX.Element;
+  path: string;
+  action?: ProcessState;
+}> = [
+  { label: 'HOME', icon: <FaHome />, path: '/' },
+  { label: '쇼츠 자동화', icon: <FaRobot />, path: '/auto', action: 'initial' },
+  { label: '애널리틱스', icon: <FaClipboardList />, path: '/analytics' },
+];
+
+const categories = [
+  { label: '음식', icon: <FaUtensils /> },
+  { label: '여행', icon: <FaPlane /> },
+  { label: '게임', icon: <FaGamepad /> },
+  { label: '음악', icon: <FaMusic /> },
+  { label: '스포츠', icon: <FaBasketballBall /> },
+];
+
 const Sidebar = () => {
+  const { setProcessState } = useProcessContext();
+  const navigate = useNavigate();
+
+  const handleClick = (path: string, action?: ProcessState) => {
+    if (action) setProcessState(action); // 상태 변경
+    navigate(path); // 경로 이동
+  };
+
   return (
     <SidebarContainer>
       <LogoContainer>
         <img src={Logo} alt='logo' width='100' />
       </LogoContainer>
-
-      <Link to='/'>
-        <NavItem>
-          <CustomButton variant='ghost' size='default' icon={<FaHome />}>
-            HOME
+      
+      {navItems.map(({ label, icon, path, action }) => (
+        <NavItem key={label}>
+          <CustomButton
+            variant='ghost'
+            size='default'
+            icon={icon}
+            onClick={() => handleClick(path, action)}
+          >
+            {label}
           </CustomButton>
         </NavItem>
-      </Link>
-
-      <NavItem>
-        <Link to='/auto'>
-          <CustomButton variant='ghost' size='default' icon={<FaRobot />}>
-            쇼츠 자동화
-          </CustomButton>
-        </Link>
-      </NavItem>
-      
-      <NavItem>
-        <CustomButton variant='ghost' size='default' icon={<FaClipboardList />}>
-          애널리틱스
-        </CustomButton>
-      </NavItem>
+      ))}
 
       <br />
       <Divider />
       <br />
 
       <CategoryTitle>카테고리</CategoryTitle>
-      <NavItem>
-        <CustomButton variant='ghost' size='default' icon={<FaUtensils />}>
-          음식
-        </CustomButton>
-      </NavItem>
-      <NavItem>
-        <CustomButton variant='ghost' size='default' icon={<FaPlane />}>
-          여행
-        </CustomButton>
-      </NavItem>
-      <NavItem>
-        <CustomButton variant='ghost' size='default' icon={<FaGamepad />}>
-          게임
-        </CustomButton>
-      </NavItem>
-      <NavItem>
-        <CustomButton variant='ghost' size='default' icon={<FaMusic />}>
-          음악
-        </CustomButton>
-      </NavItem>
-      <NavItem>
-        <CustomButton
-          variant='ghost'
-          size='default'
-          icon={<FaBasketballBall />}
-        >
-          스포츠
-        </CustomButton>
-      </NavItem>
+
+      {categories.map(({ label, icon }) => (
+        <NavItem key={label}>
+          <CustomButton variant='ghost' size='default' icon={icon}>
+            {label}
+          </CustomButton>
+        </NavItem>
+      ))}
     </SidebarContainer>
   );
 };

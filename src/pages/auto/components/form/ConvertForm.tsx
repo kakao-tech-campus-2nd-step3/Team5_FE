@@ -5,12 +5,16 @@ import { z } from 'zod';
 
 import { Form, Button } from '@/components';
 
-import { FormSchema } from '../utils';
-import ConvertField from './ConvertField';
-import LinkCard from './LinkCard';
+import { LinkCard, ConvertField } from '@/pages/auto/components';
+import { FormSchema } from '@/pages/auto/utils';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 
-const ConvertForm = () => {
+const ConvertForm = ({
+  setProcessState,
+}: {
+  setProcessState: (state: 'initial' | 'progress' | 'final') => void;
+}) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -24,6 +28,7 @@ const ConvertForm = () => {
   function onSubmit(values: z.infer<typeof FormSchema>) {
     console.log('Form submitted');
     console.log(values);
+    setProcessState('progress');
   }
 
   return (
@@ -35,7 +40,7 @@ const ConvertForm = () => {
             <LinkCard />
           </FormWrapper>
           <Button variant='default' type='submit'>
-            변환하기
+            추출하기
           </Button>
         </FormContainer>
       </form>
@@ -49,6 +54,7 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 864px;
+  height: 616px;
   gap: 200px;
 `;
 
