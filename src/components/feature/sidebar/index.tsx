@@ -9,6 +9,8 @@ import {
   FaBasketballBall,
 } from 'react-icons/fa';
 
+import { Link } from 'react-router-dom';
+
 import styled from 'styled-components';
 
 import { Button } from '@/components';
@@ -59,16 +61,22 @@ const Sidebar = () => {
         <img src={Logo} alt='logo' width='100' />
       </LogoContainer>
 
+      <Link to='/'>
+        <NavItem>
+          <CustomButton variant='ghost' size='default' icon={<FaHome />}>
+            HOME
+          </CustomButton>
+        </NavItem>
+      </Link>
+
       <NavItem>
-        <CustomButton variant='ghost' size='default' icon={<FaHome />}>
-          HOME
-        </CustomButton>
+        <Link to='/auto'>
+          <CustomButton variant='ghost' size='default' icon={<FaRobot />}>
+            쇼츠 자동화
+          </CustomButton>
+        </Link>
       </NavItem>
-      <NavItem>
-        <CustomButton variant='ghost' size='default' icon={<FaRobot />}>
-          쇼츠 자동화
-        </CustomButton>
-      </NavItem>
+      
       <NavItem>
         <CustomButton variant='ghost' size='default' icon={<FaClipboardList />}>
           애널리틱스
