@@ -1,15 +1,20 @@
 import { Outlet } from 'react-router-dom';
+
 import styled from 'styled-components';
 
 import Sidebar from '@/components/feature/sidebar';
 
+import { ProcessProvider } from '@/pages/auto/provider';
+
 const RootPage = () => {
   return (
     <RootContainer>
-      <Sidebar />
-      <RootWrapper>
-        <Outlet />
-      </RootWrapper>
+      <ProcessProvider>
+        <Sidebar />
+        <RootWrapper>
+          <Outlet />
+        </RootWrapper>
+      </ProcessProvider>
     </RootContainer>
   );
 };
