@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ProfileMenu: React.FC = () => {
@@ -10,7 +11,9 @@ const ProfileMenu: React.FC = () => {
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.3 }}
       >
-        <MenuItem>내 정보 수정</MenuItem>
+        <Link to='/myPage'>
+          <MenuItem>내 정보 수정</MenuItem>
+        </Link>
         <MenuItem>로그아웃</MenuItem>
       </DropdownMenu>
     </DropdownContainer>
@@ -42,6 +45,7 @@ const MenuItem = styled.div`
     color: #333;
     white-space: nowrap;
     letter-spacing: 1px;
+    cursor: pointer;
 
     &:not(:last-child) {
         border-bottom: 1px solid #eee;
