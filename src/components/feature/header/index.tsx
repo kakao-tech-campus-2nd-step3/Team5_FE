@@ -1,14 +1,24 @@
+import { useState } from 'react';
+
+import ProfileMenu from '@/components/feature/menu/ProfileMenu';
+
 import styled from 'styled-components';
 
 import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-} from '@/components/common/avatar';
-import { Button } from '@/components/common/button';
-import { Input } from '@/components/common/input';
+  Input,
+  Button,
+} from '@/components';
 
 const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -23,12 +33,15 @@ const Header = () => {
           </BtnWrapper>
         </ChildWrapper>
 
-        <ChildWrapper>
+        <ChildWrapper onClick={toggleMenu}>
           <Avatar>
             <AvatarImage src='https://github.com/shadcn.png' alt='@shadcn' />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <Name>name</Name>
+          <Menu>
+            {isMenuOpen && <ProfileMenu />}
+          </Menu>
         </ChildWrapper>
       </Wrapper>
     </Container>
@@ -46,7 +59,6 @@ const Container = styled.header`
 `;
 
 const Wrapper = styled.div`
-  overflow: hidden;
   width: 1440px;
   height: 56px;
 
@@ -73,9 +85,13 @@ const ChildWrapper = styled.div`
   align-items: center;
   gap: 12px;
   max-width: 660px;
+  position: relative;
 `;
 
 const Name = styled.strong`
+  margin-right: 5px;
   font-size: 16px;
   color: #757575;
 `;
+
+const Menu = styled.div``;

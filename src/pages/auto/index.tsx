@@ -1,13 +1,23 @@
 import styled from 'styled-components';
 
-import ConvertForm from './components/ConvertForm';
-import Progress from './components/Progress';
+import { ConvertForm, FinalView, Process } from '@/pages/auto/components';
+import { ProgressView } from '@/pages/auto/components';
+
+import { useProcessContext } from './provider';
 
 const AutoShortsPage = () => {
+  const { processState, setProcessState } = useProcessContext();
+
   return (
     <AutoContainer>
-      <Progress />
-      <ConvertForm />
+      <Process processState={processState} />
+      {processState === 'initial' && (
+        <ConvertForm setProcessState={setProcessState} />
+      )}
+      {processState === 'progress' && (
+        <ProgressView setProcessState={setProcessState} />
+      )}
+      {processState === 'final' && <FinalView />}
     </AutoContainer>
   );
 };

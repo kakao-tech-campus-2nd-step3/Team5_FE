@@ -3,15 +3,18 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { z } from 'zod';
 
-import * as CommonUI from '@/components/common';
+import { Form, Button } from '@/components';
 
-import { FormSchema } from '@/pages/auto/utils/FormSchema';
+import { LinkCard, ConvertField } from '@/pages/auto/components';
+import { FormSchema } from '@/pages/auto/utils';
 
-import ConvertField from './ConvertField';
-import LinkCard from './LinkCard';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-const ConvertForm = () => {
+const ConvertForm = ({
+  setProcessState,
+}: {
+  setProcessState: (state: 'initial' | 'progress' | 'final') => void;
+}) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -25,22 +28,23 @@ const ConvertForm = () => {
   function onSubmit(values: z.infer<typeof FormSchema>) {
     console.log('Form submitted');
     console.log(values);
+    setProcessState('progress');
   }
 
   return (
-    <CommonUI.Form {...form}>
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormContainer>
           <FormWrapper>
             <ConvertField form={form} />
             <LinkCard />
           </FormWrapper>
-          <CommonUI.Button variant='default' type='submit'>
-            변환하기
-          </CommonUI.Button>
+          <Button variant='default' type='submit'>
+            추출하기
+          </Button>
         </FormContainer>
       </form>
-    </CommonUI.Form>
+    </Form>
   );
 };
 
@@ -50,6 +54,7 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 864px;
+  height: 616px;
   gap: 200px;
 `;
 
