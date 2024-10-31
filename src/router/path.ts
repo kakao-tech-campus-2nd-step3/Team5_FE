@@ -4,4 +4,5 @@ export const RouterPath = {
   auto: '/auto',
   myPage: '/myPage',
   notFound: '*',
+  add: '/add',
 };
