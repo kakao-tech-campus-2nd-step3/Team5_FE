@@ -9,6 +9,7 @@ import { AsyncBoundary, LoadingView } from '@/components';
 
 import { RouterPath } from './path';
 
+const AddPage = lazy(() => import('@/pages/add'));
 const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
 const RootPage = lazy(() => import('@/pages/RootPage'));
 const MainPage = lazy(() => import('@/pages/main/index'));
@@ -31,6 +32,7 @@ const routesConfig: AppRouteObject[] = [
       { path: RouterPath.notFound, element: <ErrorPage /> },
     ],
   },
+  { path: RouterPath.add, element: <AddPage /> },
 ];
 
 const routesWithAsyncBoundary = (
