@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import { cva, type VariantProps } from 'class-variance-authority';
+
 import { cn } from '@/lib/utils';
 import { Slot } from '@radix-ui/react-slot';
 
@@ -15,6 +17,7 @@ const buttonVariants = cva(
         secondary:
           'bg-secondary text-secondary-foreground shadow-sm hover:bg-primary hover:text-primary-foreground',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
+        selected: 'bg-primary text-white shadow',
       },
       size: {
         default: 'h-10 rounded-md text-base w-full',
@@ -34,19 +37,35 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
-  icon?: React.ReactNode; 
+  icon?: React.ReactNode;
+  isSelected?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, icon, asChild = false, children, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      icon,
+      isSelected = false,
+      asChild = false,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(
+          buttonVariants({ variant: isSelected ? 'selected' : variant, size }),
+          className
+        )}
         ref={ref}
         {...props}
       >
-        {icon && <span className="mr-2">{icon}</span>}
+        {icon && <span className='mr-2'>{icon}</span>}
         {children}
       </Comp>
     );
