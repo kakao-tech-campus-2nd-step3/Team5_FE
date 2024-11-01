@@ -15,6 +15,7 @@ const RootPage = lazy(() => import('@/pages/RootPage'));
 const MainPage = lazy(() => import('@/pages/main/index'));
 const MyPage = lazy(() => import('@/pages/myPage/index'));
 const AutoShortsPage = lazy(() => import('@/pages/auto/index'));
+const ShortsViewerPage = lazy(() => import('@/pages/viewer/index'));
 
 type AppRouteObject = (IndexRouteObject | NonIndexRouteObject) & {
   children?: AppRouteObject[];
@@ -30,6 +31,7 @@ const routesConfig: AppRouteObject[] = [
       { path: RouterPath.auto, element: <AutoShortsPage /> },
       { path: RouterPath.myPage, element: <MyPage /> },
       { path: RouterPath.notFound, element: <ErrorPage /> },
+      { path: RouterPath.shorts, element: <ShortsViewerPage /> },
     ],
   },
   { path: RouterPath.add, element: <AddPage /> },
