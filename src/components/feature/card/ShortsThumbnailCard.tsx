@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 
 import { LazyLoadImg } from '@/components';
 
 interface ShortsCardProps {
+  videoId: number;
   image: {
     alt: string;
     src: string;
@@ -14,12 +16,19 @@ interface ShortsCardProps {
 }
 
 const ShortsThumbnailCard: React.FC<ShortsCardProps> = ({
+  videoId,
   image,
   title,
   timeAgo,
 }) => {
+  const navigate = useNavigate();
+
+  const handleShortsClick = () => {
+    navigate(`/videos/${videoId}`);
+  }
+
   return (
-    <Card>
+    <Card onClick={handleShortsClick}>
       <LazyLoadImg image={image} />
       <Title>{title}</Title>
       <TimeAgo>{timeAgo}</TimeAgo>
@@ -39,6 +48,7 @@ const Card = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin: 10px;
   padding-top: 10px;
+  cursor: pointer;
 `;
 
 const Title = styled.h3`
