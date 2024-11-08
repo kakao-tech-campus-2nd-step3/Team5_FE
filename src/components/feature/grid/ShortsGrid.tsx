@@ -5,58 +5,36 @@ import styled from 'styled-components';
 
 import { ShortsThumbnailCard } from '@/components';
 
-import shortsImg from '@/assets/shorts_img.png';
+import { fetchShortsByCategory, ShortsVideoProps } from '@/pages/main/apis/fetchShortsList.api';
 
-const shortsData = [
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠1',
-    timeAgo: '2일 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠2',
-    timeAgo: '4시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠3',
-    timeAgo: '11시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠4',
-    timeAgo: '1시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠5',
-    timeAgo: '1시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠6',
-    timeAgo: '1시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠7',
-    timeAgo: '1시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠8',
-    timeAgo: '1시간 전',
-  },
-];
+interface ShortsGridProps {
+  categoryId: number;
+}
 
-const CARD_WIDTH = 210; 
+const CARD_WIDTH = 210;
 const SLIDE_AMOUNT = CARD_WIDTH * 2;
 
-const ShortsGrid = () => {
+const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
   const constraintsRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(0);
   const [maxPosition, setMaxPosition] = useState(0);
+  const [shortsData, setShortsData] = useState<ShortsVideoProps[]>([]);
+
+  useEffect(() => {
+    const loadShorts = async () => {
+      try {
+        const data = await fetchShortsByCategory({
+          categoryId,
+          page: 0,
+          size: 10,
+        });
+        setShortsData(data);
+      } catch (error) {
+        console.error('Error fetching shorts:', error);
+      }
+    };
+    loadShorts();
+  }, [categoryId]);
 
   useEffect(() => {
     if (constraintsRef.current) {
@@ -64,7 +42,7 @@ const ShortsGrid = () => {
       const containerWidth = constraintsRef.current.offsetWidth;
       setMaxPosition(-(sliderWidth - containerWidth));
     }
-  }, []);
+  }, [shortsData]);
 
   const handlePrev = () => {
     setPosition((prev) => Math.min(prev + SLIDE_AMOUNT, 0));
@@ -84,12 +62,12 @@ const ShortsGrid = () => {
           animate={{ x: position }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
-          {shortsData.map((shorts, index) => (
+          {shortsData.map((short, index) => (
             <motion.div key={index} className='card-wrapper'>
               <ShortsThumbnailCard
-                image={shorts.image}
-                title={shorts.title}
-                timeAgo={shorts.timeAgo}
+                image={{ src: short.thumbnail, alt: short.title }}
+                title={short.title}
+                timeAgo={short.createdAt}
               />
             </motion.div>
           ))}
@@ -108,8 +86,7 @@ const SliderWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 20px 0;
   position: relative;
   overflow: hidden;
 `;
