@@ -5,85 +5,78 @@ import styled from 'styled-components';
 
 import { ShortsThumbnailCard } from '@/components';
 
-import shortsImg from '@/assets/shorts_img.png';
+import { fetchShortsByCategory, ShortsVideoProps } from '@/pages/main/apis/fetchShortsList.api';
 
-const shortsData = [
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠1',
-    timeAgo: '2일 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠2',
-    timeAgo: '4시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠3',
-    timeAgo: '11시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠4',
-    timeAgo: '1시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠5',
-    timeAgo: '1시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠6',
-    timeAgo: '1시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠7',
-    timeAgo: '1시간 전',
-  },
-  {
-    image: { src: shortsImg, alt: 'Shorts' },
-    title: '인기 쇼츠8',
-    timeAgo: '1시간 전',
-  },
-];
+interface ShortsGridProps {
+  categoryId: number;
+}
 
-const ShortsGrid = () => {
+const CARD_WIDTH = 210;
+const SLIDE_AMOUNT = CARD_WIDTH * 2;
+
+const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
   const constraintsRef = useRef<HTMLDivElement>(null);
-  const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0 });
+  const [position, setPosition] = useState(0);
+  const [maxPosition, setMaxPosition] = useState(0);
+  const [shortsData, setShortsData] = useState<ShortsVideoProps[]>([]);
+
+  useEffect(() => {
+    const loadShorts = async () => {
+      try {
+        const data = await fetchShortsByCategory({
+          categoryId,
+          page: 0,
+          size: 10,
+        });
+        setShortsData(data);
+      } catch (error) {
+        console.error('Error fetching shorts:', error);
+      }
+    };
+    loadShorts();
+  }, [categoryId]);
 
   useEffect(() => {
     if (constraintsRef.current) {
       const sliderWidth = constraintsRef.current.scrollWidth;
       const containerWidth = constraintsRef.current.offsetWidth;
-      setDragConstraints({ left: -(sliderWidth - containerWidth), right: 0 });
+      setMaxPosition(-(sliderWidth - containerWidth));
     }
-  }, []);
+  }, [shortsData]);
+
+  const handlePrev = () => {
+    setPosition((prev) => Math.min(prev + SLIDE_AMOUNT, 0));
+  };
+
+  const handleNext = () => {
+    setPosition((prev) => Math.max(prev - SLIDE_AMOUNT, maxPosition));
+  };
 
   return (
     <SliderWrapper>
+      <Button onClick={handlePrev} disabled={position === 0}>
+        {'<'}
+      </Button>
       <SliderContainer ref={constraintsRef}>
         <Slider
-          drag='x'
-          dragConstraints={dragConstraints}
-          dragMomentum={true}
-          initial={{ x: 0 }}
-          animate={{ x: 0 }}
-          whileTap={{ cursor: 'grabbing' }}
+          animate={{ x: position }}
+          transition={{ type: 'spring', stiffness: 300 }}
         >
-          {shortsData.map((shorts, index) => (
+          {shortsData.map((short, index) => (
             <motion.div key={index} className='card-wrapper'>
               <ShortsThumbnailCard
-                image={shorts.image}
-                title={shorts.title}
-                timeAgo={shorts.timeAgo}
+                videoId={short.videoId}
+                image={{ src: short.thumbnail, alt: short.title }}
+                title={short.title}
+                timeAgo={short.createdAt}
               />
             </motion.div>
           ))}
         </Slider>
       </SliderContainer>
+      <Button onClick={handleNext} disabled={position === maxPosition}>
+        {'>'}
+      </Button>
     </SliderWrapper>
   );
 };
@@ -91,41 +84,17 @@ const ShortsGrid = () => {
 export default ShortsGrid;
 
 const SliderWrapper = styled.div`
+  display: flex;
+  align-items: center;
   width: 100%;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 20px 0;
   position: relative;
   overflow: hidden;
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 50px;
-    z-index: 1;
-  }
-  &::before {
-    left: 0;
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 1),
-      rgba(255, 255, 255, 0)
-    );
-  }
-  &::after {
-    right: 0;
-    background: linear-gradient(
-      to left,
-      rgba(255, 255, 255, 1),
-      rgba(255, 255, 255, 0)
-    );
-  }
 `;
 
-const SliderContainer = styled(motion.div)`
-  overflow: 'hidden';
-  cursor: 'grab';
+const SliderContainer = styled.div`
+  overflow: hidden;
+  flex: 1;
 `;
 
 const Slider = styled(motion.div)`
@@ -133,5 +102,19 @@ const Slider = styled(motion.div)`
   gap: 30px;
   .card-wrapper {
     min-width: 180px;
+  }
+`;
+
+const Button = styled.button`
+  background-color: #ddd;
+  border: none;
+  border-radius: 15%;
+  padding: 10px;
+  margin: 0 20px;
+  font-size: 24px;
+  cursor: pointer;
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
   }
 `;

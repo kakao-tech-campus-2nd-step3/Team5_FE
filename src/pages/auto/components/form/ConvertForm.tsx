@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { Form, Button } from '@/components';
 
 import { LinkCard, ConvertField } from '@/pages/auto/components';
+import { LinkProvider } from '@/pages/auto/provider';
 import { FormSchema } from '@/pages/auto/utils';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -35,10 +36,12 @@ const ConvertForm = ({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormContainer>
-          <FormWrapper>
-            <ConvertField form={form} />
-            <LinkCard />
-          </FormWrapper>
+          <LinkProvider>
+            <FormWrapper>
+              <ConvertField form={form} />
+              <LinkCard />
+            </FormWrapper>
+          </LinkProvider>
           <Button variant='default' type='submit'>
             추출하기
           </Button>

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
@@ -15,7 +16,7 @@
       "@/mocks/*": ["./src/mocks/*"],
       "@/styles/*": ["./src/styles/*"]
     },
-    "types": ["msw"],
+    "types": ["msw", "jest"]
   },
   "files": [],
   "include": ["src"],
