@@ -65,6 +65,7 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
           {shortsData.map((short, index) => (
             <motion.div key={index} className='card-wrapper'>
               <ShortsThumbnailCard
+                videoId={short.videoId}
                 image={{ src: short.thumbnail, alt: short.title }}
                 title={short.title}
                 timeAgo={short.createdAt}
