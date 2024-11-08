@@ -1,4 +1,4 @@
-import { fetchInstace } from '@/apis/instance/Instance.api';
+import { fetchInstance } from '@/apis/instance/Instance.api';
 
 export type ValidateUrlProps = {
   title: string;
@@ -13,7 +13,7 @@ const postValidateUrlPath = () => '/api/videos/youtube-url-validation';
 export const postValidateUrl = async (
   url: UrlOnlyProps
 ): Promise<ValidateUrlProps> => {
-  const reponse = await fetchInstace.post(postValidateUrlPath(), url);
+  const response = await fetchInstance.post(postValidateUrlPath(), url);
 
-  return reponse.data;
+  return response.data;
 };

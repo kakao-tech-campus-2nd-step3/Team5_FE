@@ -5,5 +5,5 @@ export const RouterPath = {
   myPage: '/myPage',
   notFound: '*',
   add: '/add',
-  shorts: '/shorts',
+  videos: '/videos/:videoId',
 };
