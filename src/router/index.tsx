@@ -31,7 +31,7 @@ const routesConfig: AppRouteObject[] = [
       { path: RouterPath.auto, element: <AutoShortsPage /> },
       { path: RouterPath.myPage, element: <MyPage /> },
       { path: RouterPath.notFound, element: <ErrorPage /> },
-      { path: RouterPath.shorts, element: <ShortsViewerPage /> },
+      { path: RouterPath.videos, element: <ShortsViewerPage /> },
     ],
   },
   { path: RouterPath.add, element: <AddPage /> },
