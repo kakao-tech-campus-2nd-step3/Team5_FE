@@ -1,5 +1,7 @@
 import { http, HttpResponse } from 'msw';
+
 import type { ShortsVideoProps } from '@/pages/main/apis/fetchShortsList.api';
+
 import mockImg from '@/assets/shorts_img.png';
 
 export const FetchShortsHandler = [
@@ -16,13 +18,16 @@ export const FetchShortsHandler = [
       );
     }
 
-    const mockData: ShortsVideoProps[] = Array.from({ length: 50 }, (_, index) => ({
-      videoId: index + 1,
-      thumbnail: mockImg,
-      title: `Mocking Data ${index + 1}`,
-      memberId: index % 5,
-      createdAt: new Date().toISOString(),
-    }));
+    const mockData: ShortsVideoProps[] = Array.from(
+      { length: 50 },
+      (_, index) => ({
+        videoId: index + 1,
+        thumbnail: mockImg,
+        title: `Mocking Data ${index + 1}`,
+        memberId: index % 5,
+        createdAt: new Date().toISOString(),
+      })
+    );
 
     const start = page * size;
     const end = start + size;

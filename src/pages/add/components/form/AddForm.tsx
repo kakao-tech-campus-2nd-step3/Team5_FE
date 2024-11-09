@@ -5,6 +5,7 @@ import { z } from 'zod';
 
 import { Form, Button } from '@/components';
 
+import { postAddInfo } from '@/pages/add/apis';
 import { AddInformField } from '@/pages/add/components';
 import { AddSchema } from '@/pages/add/utils';
 
@@ -21,8 +22,8 @@ const AddForm = () => {
   });
 
   function onSubmit(value: z.infer<typeof AddSchema>) {
+    postAddInfo(value);
     console.log('Form submitted');
-    console.log(value);
   }
 
   return (
