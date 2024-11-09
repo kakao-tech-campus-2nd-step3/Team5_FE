@@ -11,11 +11,15 @@ export type Category = {
   name: string;
 };
 
+export type AddInfoResponse = Omit<AddInfoProps, 'categories'> & {
+  categories: Category[];
+};
+
 const postAddinfoPath = () => '/api/additional-info';
 
-export const postAddInfo = async <T extends AddInfoProps>(
-  info: T
-): Promise<Omit<T, 'categories'> & { categories: Category[] }> => {
+export const postAddInfo = async (
+  info: AddInfoProps
+): Promise<AddInfoResponse> => {
   const response = await fetchInstace.post(postAddinfoPath(), info);
 
   return response.data;
