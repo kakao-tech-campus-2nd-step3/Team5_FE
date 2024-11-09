@@ -1,1 +1,1 @@
-export { createInstance, fetchInstace, queryClient } from './Instance.api';
+export { createInstance, fetchInstance, queryClient } from './Instance.api';
