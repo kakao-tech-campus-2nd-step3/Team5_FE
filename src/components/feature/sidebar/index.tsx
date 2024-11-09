@@ -14,8 +14,7 @@ import styled from 'styled-components';
 
 import { Button } from '@/components';
 
-import { useProcessContext } from '@/pages/auto/provider';
-import { ProcessState } from '@/pages/auto/provider';
+import { useProcessContext, ProcessState } from '@/pages/auto/provider';
 
 import Logo from '@/assets/logo.png';
 
