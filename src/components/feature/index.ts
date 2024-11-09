@@ -3,3 +3,4 @@ export { default as Sidebar } from './sidebar';
 export { default as ShortsGrid } from './grid/ShortsGrid';
 export { default as ShortsThumbnailCard } from './card/ShortsThumbnailCard';
 export { default as ProfileMenu } from './menu/ProfileMenu';
+export { default as CategoriesBtn } from './button/CategoriesBtn';

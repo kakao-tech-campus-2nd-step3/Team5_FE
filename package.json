@@ -45,6 +45,7 @@
     "shadcn": "^2.0.8",
     "styled-components": "^6.1.13",
     "styled-reset": "^4.5.2",
+    "swiper": "^11.1.14",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8",

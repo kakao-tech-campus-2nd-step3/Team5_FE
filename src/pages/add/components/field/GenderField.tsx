@@ -9,7 +9,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  Button,
+  CategoriesBtn,
 } from '@/components';
 
 import { AddSchema } from '@/pages/add/utils';
@@ -19,7 +19,7 @@ type GenderFieldProps = {
 };
 
 const GenderField = ({ form }: GenderFieldProps) => {
-  const gender = ['남성', '여성'];
+  const genderOptions = ['남성', '여성'];
 
   return (
     <FormField
@@ -32,22 +32,12 @@ const GenderField = ({ form }: GenderFieldProps) => {
           </FormLabel>
           <FormControl>
             <ButtonWrapper>
-              {gender.map((gender) => {
-                const isSelected = field.value.includes(gender);
-
-                return (
-                  <Button
-                    key={gender}
-                    type='button'
-                    variant='secondary'
-                    size='sm'
-                    isSelected={isSelected}
-                    onClick={() => field.onChange(gender)}
-                  >
-                    {gender}
-                  </Button>
-                );
-              })}
+              <CategoriesBtn
+                options={genderOptions}
+                selectedValues={field.value ? [field.value] : []}
+                onChange={(selected) => field.onChange(selected[0] ?? '')}
+                maxSelections={1}
+              />
             </ButtonWrapper>
           </FormControl>
           <FormMessage />

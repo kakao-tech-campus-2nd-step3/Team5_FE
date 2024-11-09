@@ -43,7 +43,7 @@ export const createInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const fetchInstace = createInstance({});
+export const fetchInstance = createInstance({});
 
 export const queryClient = new QueryClient({
   defaultOptions: {
