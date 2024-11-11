@@ -10,9 +10,9 @@ const MainPage = () => {
   return (
     <>
       <Header />
-      <MainContents>
+      <MainContents id='scrollContainer'>
         {Categories.map((category) => (
-          <Element key={category.id} name={`category-${category.id}`}>
+          <Element name={category.name} key={category.id}>
             <CategorySection>
               <CategoryTitle>
                 <CategoryIndicator />

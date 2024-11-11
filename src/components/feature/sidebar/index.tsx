@@ -9,6 +9,7 @@ import {
   FaBasketballBall,
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-scroll';
 
 import styled from 'styled-components';
 
@@ -68,11 +69,11 @@ const navItems: Array<{
 ];
 
 const categories = [
-  { label: '음식', icon: <FaUtensils /> },
-  { label: '여행', icon: <FaPlane /> },
-  { label: '게임', icon: <FaGamepad /> },
-  { label: '음악', icon: <FaMusic /> },
-  { label: '스포츠', icon: <FaBasketballBall /> },
+  { id: 1, label: '음식', icon: <FaUtensils /> },
+  { id: 2, label: '여행', icon: <FaPlane /> },
+  { id: 3, label: '게임', icon: <FaGamepad /> },
+  { id: 4, label: '음악', icon: <FaMusic /> },
+  { id: 5, label: '스포츠', icon: <FaBasketballBall /> },
 ];
 
 const Sidebar = () => {
@@ -80,8 +81,8 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const handleClick = (path: string, action?: ProcessState) => {
-    if (action) setProcessState(action); // 상태 변경
-    navigate(path); // 경로 이동
+    if (action) setProcessState(action);
+    navigate(path);
   };
 
   return (
@@ -111,9 +112,18 @@ const Sidebar = () => {
 
       {categories.map(({ label, icon }) => (
         <NavItem key={label}>
-          <CustomButton variant='ghost' size='default' icon={icon}>
-            {label}
-          </CustomButton>
+          <Link
+            to={label}
+            smooth={true}
+            spy={true}
+            duration={500}
+            offset={-80}
+            containerId='scrollContainer'
+          >
+            <CustomButton variant='ghost' size='default' icon={icon}>
+              {label}
+            </CustomButton>
+          </Link>
         </NavItem>
       ))}
     </SidebarContainer>
