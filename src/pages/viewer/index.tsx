@@ -1,47 +1,94 @@
-import React from 'react';
-import { useInView } from 'react-intersection-observer';
+import React, { useState } from 'react';
+import { FaThumbsUp, FaComment } from 'react-icons/fa';
+import { useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import { useFetchShorts } from '@/pages/viewer/api/useFetchShorts.api';
+import { useFetchShort } from '@/pages/viewer/apis/useFetchShorts.api';
+import CommentsContainer from '@/pages/viewer/components/Comments';
 import ShortsCard from '@/pages/viewer/components/ShortsCard';
 
 const ShortsViewerPage: React.FC = () => {
-  const { ref, inView } = useInView();
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useFetchShorts();
+  const { videoId } = useParams<{ videoId: string }>();
+  const { data: short, isLoading, error } = useFetchShort(Number(videoId));
+  const [showComments, setShowComments] = useState(false);
 
-  React.useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading video.</div>;
+  if (!short) return <div>No video found.</div>;
 
   return (
-    <Container>
-      {data?.pages.map((page, pageIndex) => (
-        <React.Fragment key={pageIndex}>
-          {page.data.map((short) => (
-            <ShortsCard key={short.id} short={short} />
-          ))}
-        </React.Fragment>
-      ))}
-      <div ref={ref} />
-      {isFetchingNextPage && <Loading>Loading more...</Loading>}
-    </Container>
+    <PageContainer>
+      <MainContent>
+        <ContentContainer showComments={showComments}>
+          <ShortsCard short={short} />
+          <VideoActions>
+            <Action>
+              <FaThumbsUp size={24} />
+              <ActionText>{short.likeCount}</ActionText>
+            </Action>
+            <Action onClick={() => setShowComments(!showComments)}>
+              <FaComment size={24} />
+              <ActionText>{short.commentsCount}</ActionText>
+            </Action>
+          </VideoActions>
+        </ContentContainer>
+        {showComments && (
+          <CommentsContainer onClose={() => setShowComments(false)} />
+        )}
+      </MainContent>
+    </PageContainer>
   );
 };
 
 export default ShortsViewerPage;
 
-const Container = styled.div`
+const PageContainer = styled.div`
+  display: flex;
+  height: 100vh;
+`;
+
+const MainContent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+const ContentContainer = styled.div<{ showComments: boolean }>`
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: ${({ showComments }) => (showComments ? '100px' : '0')};
+  transition: margin-right 0.4s ease;
+`;
+
+const VideoActions = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px;
+  gap: 20px;
+  margin-left: 20px;
 `;
 
-export const Loading = styled.p`
+const Action = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  gap: 8px;
+  color: #555;
+  cursor: pointer;
+  &:hover {
+    color: #111;
+  }
+`;
+
+const ActionText = styled.span`
+  font-size: 16px;
+  margin-top: 5px;
+  color: #555;
   text-align: center;
-  padding: 20px;
 `;
