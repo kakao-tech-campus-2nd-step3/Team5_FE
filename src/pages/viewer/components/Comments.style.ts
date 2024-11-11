@@ -83,10 +83,17 @@ export const CommentInput = styled.input`
   outline: none;
 `;
 
-export const CloseButton = styled.button`
-  background: none;
+export const SubmitButton = styled.button`
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px 12px;
   border: none;
-  font-size: 20px;
+  border-radius: 4px;
   cursor: pointer;
-  padding-left: 10px;
+  font-size: 14px;
+  margin-left: 8px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 `;
