@@ -20,7 +20,7 @@ const ShortsViewerPage: React.FC = () => {
   return (
     <PageContainer>
       <MainContent>
-        <ContentContainer showComments={showComments}>
+        <ContentContainer $isComments={showComments}>
           <ShortsCard short={short} />
           <VideoActions>
             <Action>
@@ -34,7 +34,7 @@ const ShortsViewerPage: React.FC = () => {
           </VideoActions>
         </ContentContainer>
         {showComments && (
-          <CommentsContainer onClose={() => setShowComments(false)} />
+          <CommentsContainer videoId={Number(videoId)} onClose={() => setShowComments(false)} />
         )}
       </MainContent>
     </PageContainer>
@@ -55,14 +55,19 @@ const MainContent = styled.div`
   width: 100%;
 `;
 
-const ContentContainer = styled.div<{ showComments: boolean }>`
+const ContentContainer = styled.div.attrs<{ $isComments: boolean }>(
+  ({ $isComments }) => ({
+    style: {
+      marginRight: $isComments ? '100px' : '0',
+    },
+  })
+)<{ $isComments: boolean }>`
   position: relative;
   max-width: 600px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: ${({ showComments }) => (showComments ? '100px' : '0')};
   transition: margin-right 0.4s ease;
 `;
 
