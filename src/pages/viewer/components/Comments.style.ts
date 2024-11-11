@@ -39,12 +39,19 @@ export const Comment = styled.div`
   margin-bottom: 10px;
 `;
 
-export const Avatar = styled.div`
+export const Avatar = styled.img`
   width: 40px;
   height: 40px;
   background-color: #ddd;
   border-radius: 50%;
   margin-right: 10px;
+`;
+
+export const NoCommentsMessage = styled.div`
+  color: #aaa;
+  font-size: 16px;
+  text-align: center;
+  padding: 20px;
 `;
 
 export const CommentContent = styled.div`
