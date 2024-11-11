@@ -1,0 +1,1 @@
+export { ViewShortsHandler } from './ViewShortsHandler';
