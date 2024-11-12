@@ -39,11 +39,11 @@ const AgeField = ({ form }: AgeFieldProps) => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value='option1'>10대</SelectItem>
-                  <SelectItem value='option2'>20대</SelectItem>
-                  <SelectItem value='option3'>30대</SelectItem>
-                  <SelectItem value='option4'>40대</SelectItem>
-                  <SelectItem value='option5'>50대 이상</SelectItem>
+                  <SelectItem value='10대'>10대</SelectItem>
+                  <SelectItem value='20대'>20대</SelectItem>
+                  <SelectItem value='30대'>30대</SelectItem>
+                  <SelectItem value='40대'>40대</SelectItem>
+                  <SelectItem value='50대'>50대 이상</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

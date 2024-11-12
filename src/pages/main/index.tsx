@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Header, ShortsGrid } from '@/components';
 
-import { Categories } from '@/pages/main/utils/Category';
+import { Categories } from '@/pages/main/utils';
 
 const MainPage = () => {
   return (

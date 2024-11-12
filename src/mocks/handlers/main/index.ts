@@ -1,1 +1,0 @@
-export { FetchShortsHandler } from './FetchShortsHandler';

@@ -1,4 +1,4 @@
-import { fetchInstance } from '@/apis/instance/Instance.api';
+import { fetchInstance } from '@/apis';
 
 export type ValidateUrlProps = {
   title: string;
