@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-import type { ShortsVideoProps } from '@/pages/main/apis/fetchShortsList.api';
+import type { ShortsVideoProps } from '@/pages/main/apis/fetchShortsList';
 
 import mockImg from '@/assets/shorts_img.png';
 

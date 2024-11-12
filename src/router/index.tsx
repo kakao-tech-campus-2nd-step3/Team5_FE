@@ -12,10 +12,11 @@ import { RouterPath } from './path';
 const AddPage = lazy(() => import('@/pages/add'));
 const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
 const RootPage = lazy(() => import('@/pages/RootPage'));
-const MainPage = lazy(() => import('@/pages/main/index'));
-const MyPage = lazy(() => import('@/pages/myPage/index'));
-const AutoShortsPage = lazy(() => import('@/pages/auto/index'));
-const ShortsViewerPage = lazy(() => import('@/pages/viewer/index'));
+const MainPage = lazy(() => import('@/pages/main'));
+const MyPage = lazy(() => import('@/pages/myPage'));
+const AutoShortsPage = lazy(() => import('@/pages/auto'));
+const ShortsViewerPage = lazy(() => import('@/pages/viewer'));
+const RedirectPage = lazy(() => import('@/pages/redirect'));
 
 type AppRouteObject = (IndexRouteObject | NonIndexRouteObject) & {
   children?: AppRouteObject[];
@@ -35,6 +36,7 @@ const routesConfig: AppRouteObject[] = [
     ],
   },
   { path: RouterPath.add, element: <AddPage /> },
+  { path: RouterPath.redirect, element: <RedirectPage /> },
 ];
 
 const routesWithAsyncBoundary = (

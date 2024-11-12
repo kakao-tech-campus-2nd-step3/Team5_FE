@@ -5,6 +5,8 @@ import type {
   InternalAxiosRequestConfig,
 } from 'axios';
 
+import { postReissue } from '@/apis/auth';
+
 import { BASE_URL } from '@/constants/URI';
 
 import { QueryClient } from '@tanstack/react-query';
@@ -29,8 +31,7 @@ export const createInstance = (config: AxiosRequestConfig): AxiosInstance => {
     (config: InternalAxiosRequestConfig) => {
       const accessToken = localStorage.getItem('accessToken');
 
-      if (accessToken !== undefined) {
-        config.headers['Content-Type'] = 'application/json';
+      if (accessToken) {
         config.headers['Authorization'] = `Bearer ${accessToken}`;
       }
 
@@ -40,6 +41,39 @@ export const createInstance = (config: AxiosRequestConfig): AxiosInstance => {
       return Promise.reject(error);
     }
   );
+
+  // instance.interceptors.response.use(
+  //   (response) => response,
+  //   async (error) => {
+  //     console.log(error);
+  //     const { config, response } = error;
+  //     if (response.status === 401) {
+  //       const refreshToken = localStorage.getItem('refreshToken');
+
+  //       if (refreshToken) {
+  //         try {
+  //           const data = await postReissue({ refreshToken });
+  //           console.log('Reissue success:', data);
+
+  //           localStorage.setItem('accessToken', data.accessToken);
+  //           localStorage.setItem('refreshToken', data.refreshToken);
+
+  //           config.headers['Authorization'] = `Bearer ${data.accessToken}`;
+  //           return axios(config);
+  //         } catch (reissueError) {
+  //           console.error('Reissue failed:', reissueError);
+  //           return Promise.reject(reissueError);
+  //         }
+  //       } else {
+  //         console.error('No refresh token found');
+  //         return Promise.reject(error);
+  //       }
+  //     }
+
+  //     return Promise.reject(error);
+  //   }
+  // );
+
   return instance;
 };
 
