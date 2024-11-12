@@ -1,4 +1,6 @@
-import { fetchInstance } from '@/apis/instance/Instance.api';
+import { fetchInstance } from '@/apis/instance';
+
+import { useQuery } from '@tanstack/react-query';
 
 export type ShortsVideoProps = {
   videoId: number;
@@ -6,13 +8,13 @@ export type ShortsVideoProps = {
   title: string;
   memberId: number;
   createdAt: string;
-}
+};
 
 export type FetchShortsParams = {
   categoryId: number;
   page?: number;
   size?: number;
-}
+};
 
 const fetchShortsPath = () => '/api/videos';
 
@@ -28,4 +30,20 @@ export const fetchShortsByCategory = async (
   });
 
   return response.data;
+};
+
+export const useFetchShortsByCategory = (params: FetchShortsParams) => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  return useQuery<ShortsVideoProps[], Error>({
+    queryKey: [
+      'fetchShortsByCategory',
+      params.categoryId,
+      params.page,
+      params.size,
+    ],
+    queryFn: () => fetchShortsByCategory(params),
+    staleTime: 1000 * 60 * 3,
+    enabled: !!accessToken,
+  });
 };
