@@ -1,10 +1,27 @@
+import { useEffect } from 'react';
+
 import styled from 'styled-components';
 
 import { Header, ShortsGrid } from '@/components';
 
 import { Categories } from '@/pages/main/utils';
 
+import { detectUserAgent } from '@/utils/detectUserAgent';
+import {
+  openLinkInKakaoExternal,
+  openLinkInSupportedBrowsers,
+} from '@/utils/openLinkExternalBrowser';
+
 const MainPage = () => {
+  useEffect(function RedirectByUserAgent() {
+    const signInUrl = 'http://localhost:5173';
+    if (detectUserAgent() === 'KAKAOTALK') {
+      openLinkInKakaoExternal(signInUrl);
+    } else if (detectUserAgent() !== 'DEFAULT') {
+      openLinkInSupportedBrowsers(signInUrl);
+    }
+  }, []);
+
   return (
     <>
       <Header />

@@ -3,9 +3,14 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-import { ShortsThumbnailCard } from '@/components';
+import { ShortsThumbnailCard, Spinner } from '@/components';
 
-import { fetchShortsByCategory, ShortsVideoProps } from '@/pages/main/apis/fetchShortsList.api';
+import {
+  fetchShortsByCategory,
+  ShortsVideoProps,
+} from '@/pages/main/apis/fetchShortsList';
+
+import { useQuery } from '@tanstack/react-query';
 
 interface ShortsGridProps {
   categoryId: number;
@@ -18,23 +23,16 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
   const constraintsRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(0);
   const [maxPosition, setMaxPosition] = useState(0);
-  const [shortsData, setShortsData] = useState<ShortsVideoProps[]>([]);
 
-  useEffect(() => {
-    const loadShorts = async () => {
-      try {
-        const data = await fetchShortsByCategory({
-          categoryId,
-          page: 0,
-          size: 10,
-        });
-        setShortsData(data);
-      } catch (error) {
-        console.error('Error fetching shorts:', error);
-      }
-    };
-    loadShorts();
-  }, [categoryId]);
+  // useQuery로 데이터를 가져옵니다.
+  const {
+    data: shortsData = [],
+    isLoading,
+    isError,
+  } = useQuery<ShortsVideoProps[]>({
+    queryKey: ['fetchShortsByCategory', categoryId],
+    queryFn: () => fetchShortsByCategory({ categoryId, page: 0, size: 10 }),
+  });
 
   useEffect(() => {
     if (constraintsRef.current) {
@@ -51,6 +49,14 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
   const handleNext = () => {
     setPosition((prev) => Math.max(prev - SLIDE_AMOUNT, maxPosition));
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <div>Error loading shorts</div>;
+  }
 
   return (
     <SliderWrapper>
