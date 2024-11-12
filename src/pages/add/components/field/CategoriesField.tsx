@@ -9,7 +9,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  Button,
+  CategoriesBtn,
 } from '@/components';
 
 import { AddSchema } from '@/pages/add/utils';
@@ -19,7 +19,7 @@ type CategoriesFieldProps = {
 };
 
 const CategoriesField = ({ form }: CategoriesFieldProps) => {
-  const categories = ['음식', '여행', '게임', '음악', '스포츠'];
+  const categoryOptions = ['음식', '여행', '게임', '음악', '스포츠'];
 
   return (
     <FormField
@@ -32,32 +32,12 @@ const CategoriesField = ({ form }: CategoriesFieldProps) => {
           </FormLabel>
           <FormControl>
             <ButtonWrapper>
-              {categories.map((category) => {
-                const isSelected = field.value.includes(category);
-
-                return (
-                  <Button
-                    key={category}
-                    type='button'
-                    variant='secondary'
-                    size='sm'
-                    onClick={() => {
-                      if (isSelected) {
-                        field.onChange(
-                          field.value.filter(
-                            (item: string) => item !== category
-                          )
-                        );
-                      } else {
-                        field.onChange([...field.value, category]);
-                      }
-                    }}
-                    isSelected={isSelected}
-                  >
-                    {category}
-                  </Button>
-                );
-              })}
+              <CategoriesBtn
+                options={categoryOptions}
+                selectedValues={field.value}
+                onChange={field.onChange}
+                maxSelections={3}
+              />
             </ButtonWrapper>
           </FormControl>
           <FormMessage />
