@@ -1,8 +1,17 @@
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
+import { postLogout } from '@/apis';
+
 const ProfileMenu: React.FC = () => {
+  const handleLogout = () => {
+    postLogout();
+    localStorage.clear();
+    window.location.href = '/';
+  };
+
   return (
     <DropdownContainer>
       <DropdownMenu
@@ -14,7 +23,7 @@ const ProfileMenu: React.FC = () => {
         <Link to='/myPage'>
           <MenuItem>내 정보 수정</MenuItem>
         </Link>
-        <MenuItem>로그아웃</MenuItem>
+        <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
       </DropdownMenu>
     </DropdownContainer>
   );
@@ -23,31 +32,31 @@ const ProfileMenu: React.FC = () => {
 export default ProfileMenu;
 
 const DropdownContainer = styled.div`
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 `;
 
 const DropdownMenu = styled(motion.div)`
-    position: absolute;
-    top: 20px;
-    right: 0;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-    z-index: 100;
-    min-width: 120px; 
+  position: absolute;
+  top: 20px;
+  right: 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  z-index: 100;
+  min-width: 120px;
 `;
 
 const MenuItem = styled.div`
-    padding: 12px 0;
-    font-size: 14px;
-    color: #333;
-    white-space: nowrap;
-    letter-spacing: 1px;
-    cursor: pointer;
+  padding: 12px 0;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+  letter-spacing: 1px;
+  cursor: pointer;
 
-    &:not(:last-child) {
-        border-bottom: 1px solid #eee;
-    }
+  &:not(:last-child) {
+    border-bottom: 1px solid #eee;
+  }
 `;
