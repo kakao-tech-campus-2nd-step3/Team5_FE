@@ -17,7 +17,7 @@ interface ShortsGridProps {
 }
 
 const CARD_WIDTH = 210;
-const SLIDE_AMOUNT = CARD_WIDTH * 2;
+const SLIDE_AMOUNT = CARD_WIDTH * 3;
 
 const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
   const constraintsRef = useRef<HTMLDivElement>(null);
@@ -94,6 +94,7 @@ const SliderWrapper = styled.div`
   align-items: center;
   width: 100%;
   margin: 20px 0;
+  padding: 0 10px;
   position: relative;
   overflow: hidden;
 `;
@@ -107,7 +108,7 @@ const Slider = styled(motion.div)`
   display: flex;
   gap: 30px;
   .card-wrapper {
-    min-width: 180px;
+    min-width: ${CARD_WIDTH}px;
   }
 `;
 
