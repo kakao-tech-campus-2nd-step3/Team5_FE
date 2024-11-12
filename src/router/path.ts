@@ -6,4 +6,5 @@ export const RouterPath = {
   notFound: '*',
   add: '/add',
   videos: '/videos/:videoId',
+  redirect: '/oauth/:provider',
 };
