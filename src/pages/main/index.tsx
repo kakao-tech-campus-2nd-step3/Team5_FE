@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Element } from 'react-scroll';
+import { Element, scroller } from 'react-scroll';
 
 import styled from 'styled-components';
 

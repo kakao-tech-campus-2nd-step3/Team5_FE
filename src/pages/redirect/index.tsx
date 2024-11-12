@@ -24,7 +24,7 @@ const RedirectPage = () => {
           } else {
             localStorage.setItem('accessToken', response.access_token);
             localStorage.setItem('refreshToken', response.refresh_token);
-            navigate('/');
+            window.location.href = '/';
           }
         } catch (error) {
           console.error('OAuth Google 요청 실패:', error);
