@@ -33,11 +33,13 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
     }
   }, [shortsData]);
 
-  const handlePrev = () => {
+  const handlePrev = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setPosition((prev) => Math.min(prev + SLIDE_AMOUNT, 0));
   };
 
-  const handleNext = () => {
+  const handleNext = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setPosition((prev) => Math.max(prev - SLIDE_AMOUNT, maxPosition));
   };
 
@@ -48,6 +50,8 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
   if (isError) {
     return <div>Error loading shorts</div>;
   }
+
+  console.log("Fetched shortsData:", shortsData);
 
   return (
     <SliderWrapper>
@@ -62,10 +66,10 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
           {shortsData.map((short, index) => (
             <motion.div key={index} className='card-wrapper'>
               <ShortsThumbnailCard
-                videoId={short.videoId}
+                videoId={short.video_id}
                 image={{ src: short.thumbnail, alt: short.title }}
                 title={short.title}
-                timeAgo={short.createdAt}
+                timeAgo={short.created_at}
               />
             </motion.div>
           ))}
