@@ -36,11 +36,11 @@ const CategoryField = ({ form }: CategoryFieldProps) => (
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value='음식'>음식</SelectItem>
-                <SelectItem value='여행'>여행</SelectItem>
-                <SelectItem value='게임'>게임</SelectItem>
-                <SelectItem value='음악'>음악</SelectItem>
-                <SelectItem value='스포츠'>스포츠</SelectItem>
+                <SelectItem value='4'>음식</SelectItem>
+                <SelectItem value='1'>여행</SelectItem>
+                <SelectItem value='2'>게임</SelectItem>
+                <SelectItem value='0'>음악</SelectItem>
+                <SelectItem value='3'>스포츠</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
