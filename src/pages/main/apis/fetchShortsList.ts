@@ -33,17 +33,12 @@ export const fetchShortsByCategory = async (
 };
 
 export const useFetchShortsByCategory = (params: FetchShortsParams) => {
-  const accessToken = localStorage.getItem('accessToken');
-
-  return useQuery<ShortsVideoProps[], Error>({
+  return useQuery<ShortsVideoProps[]>({
     queryKey: [
       'fetchShortsByCategory',
-      params.categoryId,
-      params.page,
-      params.size,
+      params.categoryId
     ],
     queryFn: () => fetchShortsByCategory(params),
     staleTime: 1000 * 60 * 3,
-    enabled: !!accessToken,
   });
 };
