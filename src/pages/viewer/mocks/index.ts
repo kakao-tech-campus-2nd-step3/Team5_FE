@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-import type { ShortsProps } from '@/pages/viewer/apis/useFetchShorts.api';
+import type { ShortsProps } from '@/pages/viewer/apis/shorts/fetchShortsDetail';
 
 import sampleVideo from '@/assets/Sample_video.mp4';
 
@@ -35,6 +35,7 @@ export const FetchCommentsHandler = [
   }),
 ];
 
+// PostCommentsHandler 수정
 export const PostCommentsHandler = [
   http.post('/api/videos/:videoId/comments', async ({ request, params }) => {
     const { videoId } = params;
@@ -67,6 +68,92 @@ export const PostCommentsHandler = [
 
     return HttpResponse.json(newComment, { status: 200 });
   }),
+];
+
+export const UpdateCommentHandler = [
+  http.put(
+    '/api/videos/:videoId/comments/:commentId',
+    async ({ request, params }) => {
+      const { videoId, commentId } = params;
+      const videoIdNumber = Number(videoId);
+      const commentIdNumber = Number(commentId);
+
+      // videoId 및 commentId의 유효성 검사
+      if (isNaN(videoIdNumber) || videoIdNumber <= 0) {
+        return HttpResponse.json(
+          {
+            code: 'C003',
+            message: '존재하지 않는 videoId 입니다.',
+            data: 'Invalid video ID',
+          },
+          { status: 404 }
+        );
+      }
+      if (isNaN(commentIdNumber) || commentIdNumber <= 0) {
+        return HttpResponse.json(
+          {
+            code: 'C004',
+            message: '존재하지 않는 commentId 입니다.',
+            data: 'Invalid comment ID',
+          },
+          { status: 404 }
+        );
+      }
+
+      const requestBody = await request.json();
+      const { content } = requestBody as { content: string };
+
+      const updatedComment = {
+        commentId: commentIdNumber,
+        member: {
+          memberId: 1,
+          imageUrl: `https://i.pravatar.cc/150?img=1`,
+          username: `TestUser`,
+        },
+        content,
+      };
+
+      return HttpResponse.json(updatedComment, { status: 200 });
+    }
+  ),
+];
+
+export const DeleteCommentHandler = [
+  http.delete(
+    '/api/videos/:videoId/comments/:commentId',
+    async ({ params }) => {
+      const { videoId, commentId } = params;
+      const videoIdNumber = Number(videoId);
+      const commentIdNumber = Number(commentId);
+
+      // videoId 및 commentId의 유효성 검사
+      if (isNaN(videoIdNumber) || videoIdNumber <= 0) {
+        return HttpResponse.json(
+          {
+            code: 'C003',
+            message: '존재하지 않는 videoId 입니다.',
+            data: 'Invalid video ID',
+          },
+          { status: 404 }
+        );
+      }
+      if (isNaN(commentIdNumber) || commentIdNumber <= 0) {
+        return HttpResponse.json(
+          {
+            code: 'C004',
+            message: '존재하지 않는 commentId 입니다.',
+            data: 'Invalid comment ID',
+          },
+          { status: 404 }
+        );
+      }
+
+      return HttpResponse.json(
+        { message: '댓글 삭제 성공', commentId: commentIdNumber },
+        { status: 200 }
+      );
+    }
+  ),
 ];
 
 export const ViewShortsHandler = [

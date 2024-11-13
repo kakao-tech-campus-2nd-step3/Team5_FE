@@ -4,6 +4,8 @@ import { FetchShortsHandler } from '@/pages/main/mocks';
 import {
   FetchCommentsHandler,
   PostCommentsHandler,
+  DeleteCommentHandler,
+  UpdateCommentHandler,
   ViewShortsHandler,
 } from '@/pages/viewer/mocks';
 
@@ -14,4 +16,6 @@ export const handlers = [
   ...ViewShortsHandler,
   ...FetchCommentsHandler,
   ...PostCommentsHandler,
+  ...DeleteCommentHandler,
+  ...UpdateCommentHandler,
 ];
