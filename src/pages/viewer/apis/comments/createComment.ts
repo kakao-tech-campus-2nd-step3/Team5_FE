@@ -21,9 +21,20 @@ export const createComment = async ({
   videoId,
   content,
 }: CreateCommentParams): Promise<CommentResponse> => {
-  const response = await fetchInstance.post(`/api/videos/${videoId}/comments`, {
-    content,
-  });
+  // const accessToken = localStorage.getItem('accessToken');
+  // if (!accessToken) {
+  //   throw new Error('Access-Token 이 존재하지 않습니다.');
+  // }
+
+  const response = await fetchInstance.post(
+    `/api/videos/${videoId}/comments`,
+    { content },
+    // {
+    //   headers: {
+    //     Authorization: `Bearer ${accessToken}`,
+    //   },
+    // }
+  );
   return response.data;
 };
 
