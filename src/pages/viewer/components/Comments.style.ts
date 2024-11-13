@@ -31,12 +31,19 @@ export const CommentsList = styled.div`
   flex: 1;
   overflow-y: auto;
   margin-top: 10px;
+
+  ::-webkit-scrollbar {
+    display: none;
+  };
 `;
 
 export const Comment = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #eaeaea;
+  position: relative;
 `;
 
 export const Avatar = styled.img`
@@ -56,7 +63,9 @@ export const NoCommentsMessage = styled.div`
 
 export const CommentContent = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
+  margin-right: 10px;
 `;
 
 export const UserName = styled.span`
@@ -95,5 +104,35 @@ export const SubmitButton = styled.button`
 
   &:hover {
     background-color: #0056b3;
+  }
+`;
+
+export const OptionsButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+`;
+
+export const OptionsMenu = styled.div`
+  position: absolute;
+  top: 25px;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  border-radius: 5px;
+`;
+
+export const OptionItem = styled.div`
+  padding: 8px 16px;
+  cursor: pointer;
+  &:hover {
+    background: #f0f0f0;
   }
 `;
