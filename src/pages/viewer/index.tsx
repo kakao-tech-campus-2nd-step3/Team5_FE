@@ -4,16 +4,24 @@ import { useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import { useFetchShort } from '@/pages/viewer/apis/useFetchShorts.api';
+import { Spinner } from '@/components';
+
+import { useFetchShortDetail } from '@/pages/viewer/apis/shorts/fetchShortsDetail';
 import CommentsContainer from '@/pages/viewer/components/Comments';
 import ShortsCard from '@/pages/viewer/components/ShortsCard';
 
 const ShortsViewerPage: React.FC = () => {
   const { videoId } = useParams<{ videoId: string }>();
-  const { data: short, isLoading, error } = useFetchShort(Number(videoId));
+  const {
+    data: short,
+    isLoading,
+    error,
+  } = useFetchShortDetail(Number(videoId));
   const [showComments, setShowComments] = useState(false);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return <Spinner />;
+  }
   if (error) return <div>Error loading video.</div>;
   if (!short) return <div>No video found.</div>;
 
@@ -34,7 +42,10 @@ const ShortsViewerPage: React.FC = () => {
           </VideoActions>
         </ContentContainer>
         {showComments && (
-          <CommentsContainer videoId={Number(videoId)} onClose={() => setShowComments(false)} />
+          <CommentsContainer
+            videoId={Number(videoId)}
+            onClose={() => setShowComments(false)}
+          />
         )}
       </MainContent>
     </PageContainer>
