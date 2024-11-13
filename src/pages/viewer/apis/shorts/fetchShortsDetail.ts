@@ -17,15 +17,17 @@ export interface ShortsProps {
   commentsCount: number;
 }
 
+const fetchShortsDetailPath = (videoId: number) => `/api/videos/${videoId}`;
+
 const fetchShortById = async (videoId: number): Promise<ShortsProps> => {
-  const response = await fetchInstance.get(`/api/videos/${videoId}`);
+  const response = await fetchInstance.get(fetchShortsDetailPath(videoId));
   return response.data;
 };
 
-export const useFetchShort = (videoId: number) => {
+export const useFetchShortDetail = (videoId: number) => {
   return useQuery<ShortsProps, Error>({
     queryKey: ['short', videoId],
     queryFn: () => fetchShortById(videoId),
-    enabled: !!videoId,
+    staleTime: 1000 * 60 * 3,
   });
 };
