@@ -19,7 +19,6 @@ export function useComments(videoId: number) {
   const [newComment, setNewComment] = useState('');
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editContent, setEditContent] = useState('');
-  const [showOptions, setShowOptions] = useState<number | null>(null);
 
   useEffect(() => {
     setComments(fetchedComments);
@@ -46,7 +45,7 @@ export function useComments(videoId: number) {
   
           setComments((prevComments) =>
             prevComments.map((comment) =>
-              comment.commentId === commentId
+              comment.comment_id === commentId
                 ? { ...comment, content: newContent }
                 : comment
             )
@@ -68,15 +67,11 @@ export function useComments(videoId: number) {
       {
         onSuccess: () => {
           setComments((prevComments) =>
-            prevComments.filter((comment) => comment.commentId !== commentId)
+            prevComments.filter((comment) => comment.comment_id !== commentId)
           );
         },
       }
     );
-  };
-
-  const toggleOptions = (commentId: number) => {
-    setShowOptions((prev) => (prev === commentId ? null : commentId));
   };
 
   return {
@@ -86,12 +81,10 @@ export function useComments(videoId: number) {
     editingCommentId,
     editContent,
     setEditContent,
-    showOptions,
     setEditingCommentId,
     handleCommentSubmit,
     handleEditSubmit,
     handleDeleteComment,
-    toggleOptions,
     isLoading,
     error,
   };
