@@ -100,7 +100,7 @@ const ProfileEditField = ({ form }: ProfileEditFieldProps) => {
           name='category'
           render={({ field }) => (
             <CommonUI.FormItem>
-              <CommonUI.FormLabel>카테고리</CommonUI.FormLabel>
+              <CommonUI.FormLabel>선호 카테고리</CommonUI.FormLabel>
               <CommonUI.FormControl>
                 <Select
                   isMulti
