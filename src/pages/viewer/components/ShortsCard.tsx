@@ -13,6 +13,9 @@ interface ShortsCardProps {
       imageUrl: string;
       username: string;
     };
+    likeCount: number;
+    viewCount: number;
+    commentsCount: number;
   };
 }
 
