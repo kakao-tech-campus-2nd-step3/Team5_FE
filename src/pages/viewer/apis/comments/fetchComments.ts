@@ -3,10 +3,10 @@ import { fetchInstance } from '@/apis/instance/Instance.api';
 import { useQuery } from '@tanstack/react-query';
 
 export interface Comment {
-  commentId: number;
+  comment_id: number;
   member: {
-    memberId: number;
-    imageUrl: string;
+    member_id: number;
+    image_url: string;
     username: string;
   };
   content: string;
