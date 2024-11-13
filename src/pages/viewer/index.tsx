@@ -7,37 +7,51 @@ import styled from 'styled-components';
 import { Spinner } from '@/components';
 
 import { useFetchShortDetail } from '@/pages/viewer/apis/shorts/fetchShortsDetail';
-import CommentsContainer from '@/pages/viewer/components/Comments';
+import CommentsContainer from '@/pages/viewer/components/CommentsContainer';
 import ShortsCard from '@/pages/viewer/components/ShortsCard';
+
+import { s } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 
 const ShortsViewerPage: React.FC = () => {
   const { videoId } = useParams<{ videoId: string }>();
+
   const {
-    data: short,
+    data: shortsData,
     isLoading,
     error,
   } = useFetchShortDetail(Number(videoId));
   const [showComments, setShowComments] = useState(false);
 
+  console.log('Shorts data:', shortsData);
+
   if (isLoading) {
     return <Spinner />;
   }
   if (error) return <div>Error loading video.</div>;
-  if (!short) return <div>No video found.</div>;
+  if (!shortsData) return <div>No video found.</div>;
 
   return (
     <PageContainer>
       <MainContent>
         <ContentContainer $isComments={showComments}>
-          <ShortsCard short={short} />
+          <ShortsCard
+            id={shortsData.id}
+            category_id={shortsData.category_id}
+            video_url={shortsData.video_url}
+            member_info={shortsData.member_info}
+            title={shortsData.title}
+            like_count={shortsData.like_count}
+            view_count={shortsData.view_count}
+            comments_count={shortsData.comments_count}
+          />
           <VideoActions>
             <Action>
               <FaThumbsUp size={24} />
-              <ActionText>{short.likeCount}</ActionText>
+              <ActionText>{shortsData.like_count}</ActionText>
             </Action>
             <Action onClick={() => setShowComments(!showComments)}>
               <FaComment size={24} />
-              <ActionText>{short.commentsCount}</ActionText>
+              <ActionText>{shortsData.comments_count}</ActionText>
             </Action>
           </VideoActions>
         </ContentContainer>
