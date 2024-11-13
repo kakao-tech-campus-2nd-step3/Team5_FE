@@ -2,12 +2,7 @@ import { UseFormReturn } from 'react-hook-form';
 
 import { z } from 'zod';
 
-import {
-  CategoryField,
-  KeywordsField,
-  LinkField,
-  TitleField,
-} from '@/pages/auto/components';
+import { CategoryField, LinkField, TitleField } from '@/pages/auto/components';
 import { FormSchema } from '@/pages/auto/utils';
 
 type ConvertFieldProps = {
