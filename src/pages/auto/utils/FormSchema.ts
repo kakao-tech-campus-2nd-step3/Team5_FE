@@ -9,7 +9,7 @@ export const FormSchema = z.object({
     .max(100, {
       message: '제목은 100자 이하로 입력하셔야 합니다.',
     }),
-  categoryId: z.string(),
+  categoryId: z.number(),
   url: z
     .string()
     .url({ message: '올바른 URL 형식이어야 합니다.' })

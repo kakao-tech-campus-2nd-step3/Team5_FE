@@ -25,12 +25,15 @@ type CategoryFieldProps = {
 const CategoryField = ({ form }: CategoryFieldProps) => (
   <FormField
     control={form.control}
-    name='category'
+    name='categoryId'
     render={({ field }) => (
       <FormItem>
         <FormLabel>카테고리</FormLabel>
         <FormControl>
-          <Select defaultValue={field.value} onValueChange={field.onChange}>
+          <Select
+            defaultValue={field.value?.toString()}
+            onValueChange={(value) => field.onChange(Number(value))}
+          >
             <SelectTrigger>
               <SelectValue placeholder='카테고리를 선택해주세요.' />
             </SelectTrigger>
