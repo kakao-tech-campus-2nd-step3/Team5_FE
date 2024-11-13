@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
+import { usefetchTaskStatus } from '@/pages/auto/apis';
+
 import Loading from './Loading';
 
 const ProgressView = ({
@@ -9,38 +11,72 @@ const ProgressView = ({
 }: {
   setProcessState: (state: 'initial' | 'progress' | 'final') => void;
 }) => {
-  const [progress, setProgress] = useState<number>(20);
+  const [progress, setProgress] = useState<number>(0);
+  const [processMessage, setprocessMessage] = useState<string>('');
+  const task_id = sessionStorage.getItem('task_id'); // sessionStorage에서 task_id 가져오기
+
+  const { data } = usefetchTaskStatus(task_id ?? ''); // 상태 요청
 
   useEffect(() => {
-    // 타이머 ID를 저장할 배열
-    const timers: NodeJS.Timeout[] = [];
-
-    timers.push(
-      setTimeout(() => {
-        setProgress(70);
-      }, 700)
-    );
-
-    timers.push(
-      setTimeout(() => {
-        setProgress(100);
-      }, 1400)
-    );
+    const pollingInterval = setInterval(() => {
+      if (task_id) {
+        const status = sessionStorage.getItem('status');
+        if (status) {
+          updateProgressBar(status);
+        }
+      }
+    }, 3000);
 
     return () => {
-      timers.forEach((timer) => clearTimeout(timer));
+      clearInterval(pollingInterval);
     };
-  }, [setProcessState]);
+  }, [task_id]);
 
-  useEffect(() => {
-    if (progress === 100) {
-      setProcessState('final');
+  const updateProgressBar = (status: string) => {
+    switch (status) {
+      case 'started':
+        setProgress(10); // 시작
+        break;
+      case 'processing started':
+        setProgress(20); // 처리 시작
+        break;
+      case 'downloading video':
+        setProgress(40); // 비디오 다운로드
+        break;
+      case 'resizing video':
+        setProgress(50); // 비디오 크기 조정
+        break;
+      case 'adding subtitle':
+        setProgress(60); // 자막 추가
+        break;
+      case 'extracting highlights':
+        setProgress(70); // 하이라이트 추출
+        break;
+      case 'saving video to S3':
+        setProgress(90); // 비디오 저장
+        break;
+      case 'completed':
+        setProgress(100); // 완료
+        setProcessState('final'); // 완료되면 상태를 'final'로 변경
+        sessionStorage.setItem('status', 'completed');
+        break;
+      default:
+        break;
     }
-  }, [progress, setProcessState]);
+  };
+
+  // 상태에 따른 진행 상태 업데이트
+  useEffect(() => {
+    if (data) {
+      sessionStorage.setItem('status', data.status);
+      updateProgressBar(data.status);
+      setprocessMessage(data.status);
+    }
+  }, [data]);
 
   return (
     <LoadingContainer>
-      <Loading progress={progress} />
+      <Loading progress={progress} progressMessage={processMessage} />
     </LoadingContainer>
   );
 };

@@ -7,19 +7,21 @@ import type {
 
 import { postReissue } from '@/apis/auth';
 
-import { BASE_URL } from '@/constants/URI';
-
-import { QueryClient } from '@tanstack/react-query';
+import { BASE_FAST_URL } from '@/constants/URI';
 
 const isMSWEnvironment = import.meta.env.VITE_RUN_MSW === 'true';
 
-const baseURL = isMSWEnvironment ? 'http://localhost:5173' : `${BASE_URL}`;
+const fastBaseURL = isMSWEnvironment
+  ? 'http://localhost:5173'
+  : `${BASE_FAST_URL}`;
 
-export const createInstance = (config: AxiosRequestConfig): AxiosInstance => {
+export const createFastInstance = (
+  config: AxiosRequestConfig
+): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
     ...config,
-    baseURL,
+    baseURL: fastBaseURL,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -77,15 +79,4 @@ export const createInstance = (config: AxiosRequestConfig): AxiosInstance => {
   return instance;
 };
 
-export const fetchInstance = createInstance({});
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 3,
-      refetchOnMount: true,
-      refetchOnReconnect: true,
-      refetchOnWindowFocus: true,
-    },
-  },
-});
+export const fetchFastInstance = createFastInstance({});

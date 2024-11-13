@@ -14,7 +14,7 @@ import { AspectRatio } from '@radix-ui/react-aspect-ratio';
 const LinkCard = () => {
   const { linkState } = useLinkContext();
 
-  console.log('state', linkState);
+  // console.log('state', linkState);
 
   return (
     <Card className={cn('w-[338px]')}>

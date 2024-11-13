@@ -24,6 +24,8 @@ const Header = () => {
     if (data) {
       sessionStorage.setItem('username', data.username);
       sessionStorage.setItem('image_url', data.image_url);
+      sessionStorage.setItem('email', data.email);
+      sessionStorage.setItem('member_id', String(data.member_id));
     }
   }, [data]);
 

@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import styled from 'styled-components';
 import { z } from 'zod';
 
-import { Form, Button } from '@/components';
+import { Form, Button, Spinner } from '@/components';
 
+import { postConvertForm } from '@/pages/auto/apis';
 import { LinkCard, ConvertField } from '@/pages/auto/components';
 import { LinkProvider } from '@/pages/auto/provider';
 import { FormSchema } from '@/pages/auto/utils';
@@ -20,16 +22,42 @@ const ConvertForm = ({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: '',
-      category: '',
-      link: '',
-      keywords: '',
+      categoryId: 0,
+      url: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof FormSchema>) {
-    console.log('Form submitted');
-    console.log(values);
-    setProcessState('progress');
+  const memberId = sessionStorage.getItem('member_id');
+  const email = sessionStorage.getItem('email');
+
+  const memberIdNumber = memberId ? Number(memberId) : 0; // 기본값을 0으로 설정하거나 적절한 값을 사용
+  const emailString = email ?? ''; // null이면 빈 문자열로 설정
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function onSubmit(values: z.infer<typeof FormSchema>) {
+    const payload = {
+      ...values,
+      memberId: memberIdNumber,
+      email: emailString,
+      url: values.url ?? '',
+    };
+    // console.log('Form submitted with payload:', payload);
+
+    setIsLoading(true);
+
+    try {
+      const response = await postConvertForm(payload);
+      const { task_id } = response;
+      sessionStorage.setItem('task_id', task_id);
+      setProcessState('progress');
+    } catch (error) {
+      console.error('Error during form submission:', error);
+      alert('추출에 실패했습니다. 다시 시도해주세요.');
+      setProcessState('initial');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -43,7 +71,7 @@ const ConvertForm = ({
             </FormWrapper>
           </LinkProvider>
           <Button variant='default' type='submit'>
-            추출하기
+            {isLoading ? <Spinner /> : '추출하기'}
           </Button>
         </FormContainer>
       </form>

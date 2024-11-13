@@ -2,11 +2,17 @@ import styled from 'styled-components';
 
 import { Progress } from '@/components';
 
-const Loading = ({ progress }: { progress: number }) => {
+const Loading = ({
+  progress,
+  progressMessage,
+}: {
+  progress: number;
+  progressMessage: string;
+}) => {
   return (
     <>
       <Progress value={progress} />
-      <LoadingText>변환 중 이에요, 조금만 기다려주세요!</LoadingText>
+      <LoadingText>{progressMessage}</LoadingText>
     </>
   );
 };

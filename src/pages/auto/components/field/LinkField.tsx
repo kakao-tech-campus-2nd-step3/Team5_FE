@@ -23,7 +23,7 @@ type LinkFieldProps = {
 
 const LinkField = ({ form }: LinkFieldProps) => {
   const { watch, setError, clearErrors } = form;
-  const linkValue = watch('link');
+  const linkValue = watch('url');
 
   const { setLinkState } = useLinkContext();
 
@@ -38,9 +38,9 @@ const LinkField = ({ form }: LinkFieldProps) => {
           url: data.url,
         });
 
-        clearErrors('link');
+        clearErrors('url');
       } catch (error) {
-        setError('link', {
+        setError('url', {
           type: 'manual',
           message: '유효하지 않은 URL입니다.',
         });
@@ -59,7 +59,7 @@ const LinkField = ({ form }: LinkFieldProps) => {
   return (
     <FormField
       control={form.control}
-      name='link'
+      name='url'
       render={({ field }) => (
         <FormItem>
           <FormLabel>Youtube Link</FormLabel>

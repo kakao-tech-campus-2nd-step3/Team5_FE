@@ -5,6 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 export type fetchDataResponseProps = {
   username: string;
   image_url: string;
+  email: string;
+  member_id: number;
 };
 
 const fetchMyDataPath = () => '/api/me/profile';

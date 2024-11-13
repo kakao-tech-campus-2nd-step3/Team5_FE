@@ -5,9 +5,9 @@ export type ReissueProps = {
 };
 
 export type ReissueResponse = {
-  accessToken: string;
-  refreshToken: string;
-  isFreshUser: boolean;
+  access_token: string;
+  refresh_token: string;
+  is_fresh_user: boolean;
 };
 
 const postReissuePath = () => '/api/reissue';
@@ -15,10 +15,14 @@ const postReissuePath = () => '/api/reissue';
 export const postReissue = async ({
   refreshToken,
 }: ReissueProps): Promise<ReissueResponse> => {
-  const response = await fetchInstance.patch(postReissuePath(), null, {
-    headers: {
-      Refresh: `Bearer ${refreshToken}`,
-    },
-  });
+  const response = await fetchInstance.post(
+    postReissuePath(),
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${refreshToken}`,
+      },
+    }
+  );
   return response.data;
 };
