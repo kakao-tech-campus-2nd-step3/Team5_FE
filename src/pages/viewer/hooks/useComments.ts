@@ -41,16 +41,22 @@ export function useComments(videoId: number) {
     updateCommentMutation.mutate(
       { videoId, commentId, content: editContent },
       {
-        onSuccess: (updatedContent) => {
+        onSuccess: (updatedContent: { content: string } | string) => {
+          const newContent = typeof updatedContent === 'string' ? updatedContent : updatedContent.content;
+  
           setComments((prevComments) =>
             prevComments.map((comment) =>
               comment.commentId === commentId
-                ? { ...comment, content: updatedContent }
+                ? { ...comment, content: newContent }
                 : comment
             )
           );
+
           setEditingCommentId(null);
           setEditContent('');
+        },
+        onError: (error) => {
+          console.error('Error updating comment:', error);
         },
       }
     );
