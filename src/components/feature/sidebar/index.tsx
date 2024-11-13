@@ -63,7 +63,7 @@ const navItems: Array<{
   action?: ProcessState;
 }> = [
   { label: 'HOME', icon: <FaHome />, path: '/' },
-  { label: '쇼츠 자동화', icon: <FaRobot />, path: '/auto', action: 'initial' },
+  { label: '쇼츠 자동화', icon: <FaRobot />, path: '/auto' },
   { label: '애널리틱스', icon: <FaClipboardList />, path: '/analytics' },
 ];
 
@@ -76,11 +76,9 @@ const categories = [
 ];
 
 const Sidebar = () => {
-  const { setProcessState } = useProcessContext();
   const navigate = useNavigate();
 
-  const handleClick = (path: string, action?: ProcessState) => {
-    if (action) setProcessState(action);
+  const handleClick = (path: string) => {
     navigate(path);
   };
 
@@ -90,13 +88,13 @@ const Sidebar = () => {
         <img src={Logo} alt='logo' width='100' />
       </LogoContainer>
 
-      {navItems.map(({ label, icon, path, action }) => (
+      {navItems.map(({ label, icon, path }) => (
         <NavItem key={label}>
           <CustomButton
             variant='ghost'
             size='default'
             icon={icon}
-            onClick={() => handleClick(path, action)}
+            onClick={() => handleClick(path)}
           >
             {label}
           </CustomButton>
