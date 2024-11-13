@@ -1,0 +1,92 @@
+import { useState, useEffect } from 'react';
+
+import { useCreateComment } from '@/pages/viewer/apis/comments/createComment';
+import { useDeleteComment } from '@/pages/viewer/apis/comments/deleteComment';
+import { useFetchComments, Comment } from '@/pages/viewer/apis/comments/fetchComments';
+import { useUpdateComment } from '@/pages/viewer/apis/comments/updateComment';
+
+export function useComments(videoId: number) {
+  const {
+    data: fetchedComments = [],
+    isLoading,
+    error,
+  } = useFetchComments(videoId);
+  const createCommentMutation = useCreateComment();
+  const updateCommentMutation = useUpdateComment();
+  const deleteCommentMutation = useDeleteComment();
+
+  const [comments, setComments] = useState<Comment[]>(fetchedComments);
+  const [newComment, setNewComment] = useState('');
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [editContent, setEditContent] = useState('');
+  const [showOptions, setShowOptions] = useState<number | null>(null);
+
+  useEffect(() => {
+    setComments(fetchedComments);
+  }, [fetchedComments]);
+
+  const handleCommentSubmit = () => {
+    createCommentMutation.mutate(
+      { videoId, content: newComment },
+      {
+        onSuccess: (createdComment) => {
+          setComments((prevComments) => [...prevComments, createdComment]);
+          setNewComment('');
+        },
+      }
+    );
+  };
+
+  const handleEditSubmit = (commentId: number) => {
+    updateCommentMutation.mutate(
+      { videoId, commentId, content: editContent },
+      {
+        onSuccess: (updatedContent) => {
+          setComments((prevComments) =>
+            prevComments.map((comment) =>
+              comment.commentId === commentId
+                ? { ...comment, content: updatedContent }
+                : comment
+            )
+          );
+          setEditingCommentId(null);
+          setEditContent('');
+        },
+      }
+    );
+  };
+
+  const handleDeleteComment = (commentId: number) => {
+    deleteCommentMutation.mutate(
+      { videoId, commentId },
+      {
+        onSuccess: () => {
+          setComments((prevComments) =>
+            prevComments.filter((comment) => comment.commentId !== commentId)
+          );
+        },
+      }
+    );
+  };
+
+  const toggleOptions = (commentId: number) => {
+    setShowOptions((prev) => (prev === commentId ? null : commentId));
+  };
+
+  return {
+    comments,
+    newComment,
+    setNewComment,
+    editingCommentId,
+    editContent,
+    setEditContent,
+    showOptions,
+    setEditingCommentId,
+    handleCommentSubmit,
+    handleEditSubmit,
+    handleDeleteComment,
+    toggleOptions,
+    isLoading,
+    error,
+  };
+}
