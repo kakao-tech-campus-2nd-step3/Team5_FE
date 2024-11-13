@@ -8,10 +8,10 @@ export interface CreateCommentParams {
 }
 
 export interface CommentResponse {
-  commentId: number;
+  comment_id: number;
   member: {
-    memberId: number;
-    imageUrl: string;
+    member_id: number;
+    image_url: string;
     username: string;
   };
   content: string;
@@ -21,19 +21,19 @@ export const createComment = async ({
   videoId,
   content,
 }: CreateCommentParams): Promise<CommentResponse> => {
-  // const accessToken = localStorage.getItem('accessToken');
-  // if (!accessToken) {
-  //   throw new Error('Access-Token 이 존재하지 않습니다.');
-  // }
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    throw new Error('Access-Token 이 존재하지 않습니다.');
+  }
 
   const response = await fetchInstance.post(
     `/api/videos/${videoId}/comments`,
     { content },
-    // {
-    //   headers: {
-    //     Authorization: `Bearer ${accessToken}`,
-    //   },
-    // }
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
   );
   return response.data;
 };
