@@ -1,7 +1,7 @@
 import { fetchFastInstance } from '@/apis/instance';
 
 export type fetchSelectHighlightResponseProps = {
-  urls: string[];
+  urls: [number, string][];
   dto: fetchSelectHighlightDTO;
 };
 
