@@ -13,11 +13,19 @@ import { Link } from 'react-scroll';
 
 import styled from 'styled-components';
 
-import { Button } from '@/components';
+import {
+  Button,
+  StatusDot,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components';
 
 import { useProcessContext, ProcessState } from '@/pages/auto/provider';
 
 import Logo from '@/assets/logo.png';
+
+import { TooltipProvider } from '@radix-ui/react-tooltip';
 
 const SidebarContainer = styled.div`
   width: 228px;
@@ -59,12 +67,12 @@ const Divider = styled.div`
 const navItems: Array<{
   label: string;
   icon: JSX.Element;
-  path: string;
+  path?: string;
   action?: ProcessState;
 }> = [
   { label: 'HOME', icon: <FaHome />, path: '/' },
   { label: '쇼츠 자동화', icon: <FaRobot />, path: '/auto' },
-  { label: '애널리틱스', icon: <FaClipboardList />, path: '/analytics' },
+  { label: '애널리틱스', icon: <FaClipboardList /> },
 ];
 
 const categories = [
@@ -78,8 +86,34 @@ const categories = [
 const Sidebar = () => {
   const navigate = useNavigate();
 
+  const { processState } = useProcessContext();
+  // console.log(processState);
+
   const handleClick = (path: string) => {
     navigate(path);
+  };
+
+  const renderStatusDot = () => {
+    if (processState === 'initial') {
+      return <StatusDot status='idle' size={10} />;
+    }
+    if (processState === 'progress') {
+      return <StatusDot status='processing' size={10} />;
+    }
+    if (processState === 'final') {
+      return <StatusDot status='success' size={10} />;
+    }
+    return null;
+  };
+
+  const renderTooltipMessage = () => {
+    if (processState === 'progress') {
+      return '변환 중이에요!';
+    }
+    if (processState === 'final') {
+      return '영상 변환이 완료되었어요!';
+    }
+    return '';
   };
 
   return (
@@ -88,18 +122,32 @@ const Sidebar = () => {
         <img src={Logo} alt='logo' width='100' />
       </LogoContainer>
 
-      {navItems.map(({ label, icon, path }) => (
-        <NavItem key={label}>
-          <CustomButton
-            variant='ghost'
-            size='default'
-            icon={icon}
-            onClick={() => handleClick(path)}
-          >
-            {label}
-          </CustomButton>
-        </NavItem>
-      ))}
+      <TooltipProvider>
+        {navItems.map(({ label, icon, path }) => (
+          <NavItem key={label}>
+            <CustomButton
+              variant='ghost'
+              size='default'
+              icon={icon}
+              onClick={() => path && handleClick(path)}
+            >
+              {label}
+              {label === '쇼츠 자동화' && (
+                <div style={{ marginLeft: '8px', display: 'inline-block' }}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div>{renderStatusDot()}</div>
+                    </TooltipTrigger>
+                    <TooltipContent side='top'>
+                      {renderTooltipMessage()}
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              )}
+            </CustomButton>
+          </NavItem>
+        ))}
+      </TooltipProvider>
 
       <br />
       <Divider />
