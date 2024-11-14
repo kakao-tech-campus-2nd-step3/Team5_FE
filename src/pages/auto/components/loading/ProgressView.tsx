@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { usefetchTaskStatus } from '@/pages/auto/apis';
+import { useFetchTaskStatus } from '@/pages/auto/apis';
 
 import Loading from './Loading';
 
@@ -13,64 +13,68 @@ const ProgressView = ({
 }) => {
   const [progress, setProgress] = useState<number>(0);
   const [processMessage, setprocessMessage] = useState<string>('');
-  const task_id = sessionStorage.getItem('task_id'); // sessionStorage에서 task_id 가져오기
+  const task_id = sessionStorage.getItem('task_id');
 
-  const { data } = usefetchTaskStatus(task_id ?? ''); // 상태 요청
+  const { data, refetch } = useFetchTaskStatus(task_id ?? ''); // 상태 요청
 
   useEffect(() => {
-    const pollingInterval = setInterval(() => {
+    const pollingInterval = setInterval(async () => {
       if (task_id) {
-        const status = sessionStorage.getItem('status');
-        if (status) {
-          updateProgressBar(status);
+        const { data: refetchedData } = await refetch();
+        // console.log('Polling data:', refetchedData);
+
+        if (refetchedData?.status === 'completed') {
+          sessionStorage.setItem('status', 'completed');
+          setProcessState('final');
+          clearInterval(pollingInterval);
+        } else {
+          sessionStorage.setItem('status', refetchedData?.status ?? '');
+          updateProgressBar(refetchedData?.status ?? '');
         }
       }
-    }, 3000);
+    }, 8000);
 
     return () => {
       clearInterval(pollingInterval);
     };
-  }, [task_id]);
+  }, [task_id, refetch, setProcessState]);
 
   const updateProgressBar = (status: string) => {
     switch (status) {
       case 'started':
-        setProgress(10); // 시작
+        setProgress(10);
         break;
       case 'processing started':
-        setProgress(20); // 처리 시작
+        setProgress(20);
         break;
       case 'downloading video':
-        setProgress(40); // 비디오 다운로드
+        setProgress(40);
         break;
       case 'resizing video':
-        setProgress(50); // 비디오 크기 조정
+        setProgress(50);
         break;
       case 'adding subtitle':
-        setProgress(60); // 자막 추가
+        setProgress(60);
         break;
       case 'extracting highlights':
-        setProgress(70); // 하이라이트 추출
+        setProgress(70);
         break;
       case 'saving video to S3':
-        setProgress(90); // 비디오 저장
+        setProgress(90);
         break;
       case 'completed':
-        setProgress(100); // 완료
-        setProcessState('final'); // 완료되면 상태를 'final'로 변경
-        sessionStorage.setItem('status', 'completed');
+        setProgress(100);
         break;
       default:
         break;
     }
+    setprocessMessage(status);
   };
 
-  // 상태에 따른 진행 상태 업데이트
   useEffect(() => {
     if (data) {
       sessionStorage.setItem('status', data.status);
       updateProgressBar(data.status);
-      setprocessMessage(data.status);
     }
   }, [data]);
 

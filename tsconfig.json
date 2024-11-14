@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
+    "target": "ES6",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
@@ -20,7 +24,7 @@
     "types": ["msw", "jest"]
   },
   "files": [],
-  "include": ["src"],
+  "include": ["src/**/*", "vite.config.ts"],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }

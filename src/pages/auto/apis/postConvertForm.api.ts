@@ -13,7 +13,7 @@ export type ExtractHighlightResponseProps = {
   task_id: string;
 };
 
-const postConvertFormPath = () => '/extract-hightlights';
+const postConvertFormPath = () => '/extract-highlights';
 
 export const postConvertForm = async ({
   url,

@@ -16,7 +16,7 @@ const RedirectPage = () => {
           const response = await postOauthGoogle({ code, state });
           const isFreshUser = response.is_fresh_user;
 
-          console.log('isFreshUser', isFreshUser);
+          // console.log('isFreshUser', isFreshUser);
           if (isFreshUser) {
             localStorage.setItem('accessToken', response.access_token);
             localStorage.setItem('refreshToken', response.refresh_token);

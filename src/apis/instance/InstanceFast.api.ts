@@ -20,6 +20,7 @@ export const createFastInstance = (
 ): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
+    withCredentials: true,
     ...config,
     baseURL: fastBaseURL,
     headers: {
@@ -43,7 +44,7 @@ export const createFastInstance = (
     (error: unknown) => Promise.reject(error)
   );
 
-  console.log(instance.interceptors.response);
+  // console.log(instance.interceptors.response);
 
   instance.interceptors.response.use(
     (response) => response,
@@ -51,7 +52,7 @@ export const createFastInstance = (
       const { config, response } = error;
       if (response.status === 401) {
         const refreshToken = localStorage.getItem('refreshToken');
-        console.log('Refresh token:', refreshToken);
+        // console.log('Refresh token:', refreshToken);
         if (refreshToken) {
           try {
             const data = await postReissue({ refreshToken });
@@ -63,7 +64,7 @@ export const createFastInstance = (
             config.headers['Authorization'] = `Bearer ${data.access_token}`;
             return axios(config);
           } catch (reissueError) {
-            console.log('Reissue failed:', reissueError);
+            // console.log('Reissue failed:', reissueError);
             return Promise.reject(reissueError);
           }
         } else {
