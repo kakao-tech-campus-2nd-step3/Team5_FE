@@ -28,6 +28,10 @@ jobs:
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
 
+      - name: Install pnpm
+        run: |
+          npm install -g pnpm
+
       - name: Create .env file
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
