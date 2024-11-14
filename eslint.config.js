@@ -11,7 +11,7 @@ export default tseslint.config(
   {
     extends: [
       js.configs.recommended,
-      ...tseslint.configs.recommended,
+      'plugin:@typescript-eslint/recommended',
       'plugin:react/recommended',
       'plugin:jsx-a11y/recommended',
       'prettier',
