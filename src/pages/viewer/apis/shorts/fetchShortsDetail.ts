@@ -1,4 +1,4 @@
-import { ShortsProps } from '@/pages/viewer/components/ShortsCard';
+import { ShortsCardProps } from '@/pages/viewer/components/ShortsCard';
 
 import { fetchInstance } from '@/apis/instance/Instance.api';
 
