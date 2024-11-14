@@ -2,16 +2,31 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { LazyLoadImg } from '@/components';
-
 import { fetchSelectHighlight } from '@/pages/auto/apis';
 import type { fetchSelectHighlightResponseProps } from '@/pages/auto/apis';
+import { ShortsVideo } from '@/pages/auto/components';
 
-import conver_img from '@/assets/convert_img.png';
+const categoryMap: Record<number, string> = {
+  0: '음악',
+  1: '여행',
+  2: '게임',
+  3: '스포츠',
+  4: '음식',
+};
 
-const ConvertShorts = () => {
+type ConvertShortsProps = {
+  onSelectVideo: (
+    index: number,
+    url: string,
+    title: string,
+    category_id: number
+  ) => void;
+};
+
+const ConvertShorts = ({ onSelectVideo }: ConvertShortsProps) => {
   const [response, setResponse] =
     useState<fetchSelectHighlightResponseProps | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const taskId = sessionStorage.getItem('task_id');
 
   // taskId가 있을 때만 API 요청
@@ -31,24 +46,44 @@ const ConvertShorts = () => {
     fetchData();
   }, [taskId]);
 
+  const categoryId = response?.dto?.categoryId;
+  const categoryName = categoryMap[categoryId ?? -1] || 'Unknown';
+  const title = response?.dto?.title;
+
+  const urls = response?.urls ?? [];
+
+  const handleVideoClick = (
+    index: number,
+    url: string,
+    title: string,
+    categoryId: number
+  ) => {
+    setSelectedIndex(index);
+    onSelectVideo(index, url, title, categoryId);
+  };
+
   return (
     <ShortContainer>
-      <LazyLoadImg image={{ src: conver_img, alt: '' }} />
-
+      <IFrameCardWrapper>
+        {urls.length > 0 ? (
+          urls.map(([index, url]) => (
+            <ShortsVideo
+              key={index}
+              url={url}
+              isSelected={selectedIndex === index}
+              onClick={() =>
+                handleVideoClick(index, url, title ?? '', categoryId ?? -1)
+              }
+            />
+          ))
+        ) : (
+          <SubText>No videos found</SubText>
+        )}
+      </IFrameCardWrapper>
       <TextContainer gap='80px'>
         <TextContainer gap='16px'>
           <MainTitle>{response?.dto?.title}</MainTitle>
-          <SubText>5JoSama</SubText>
-          <CategoryBox>Fashion</CategoryBox>
-        </TextContainer>
-        <TextContainer gap='8px'>
-          <MainTitle>Keywords</MainTitle>
-          <TextContainer>
-            <SubText>쇼핑</SubText>
-            <SubText>패션</SubText>
-            <SubText>쇼핑몰</SubText>
-            <SubText>옷</SubText>
-          </TextContainer>
+          <CategoryBox>{categoryName}</CategoryBox>
         </TextContainer>
       </TextContainer>
     </ShortContainer>
@@ -57,11 +92,19 @@ const ConvertShorts = () => {
 
 export default ConvertShorts;
 
+const IFrameCardWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  height: auto;
+  overflow: auto;
+  margin-bottom: 20px;
+`;
+
 const ShortContainer = styled.div`
   display: flex;
-  justify-content: left;
+  flex-direction: column;
   width: 100%;
-  gap: 63px;
 `;
 
 const TextContainer = styled.div<{ gap?: string }>`
