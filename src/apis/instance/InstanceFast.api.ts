@@ -20,6 +20,7 @@ export const createFastInstance = (
 ): AxiosInstance => {
   const instance = axios.create({
     timeout: 5000,
+    withCredentials: true,
     ...config,
     baseURL: fastBaseURL,
     headers: {
