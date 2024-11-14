@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+import { Spinner } from '@/components';
 
 import CommentItem from '@/pages/viewer/components/CommentItem';
 import * as Styles from '@/pages/viewer/components/CommentsContainer.style';
@@ -6,11 +8,13 @@ import { useComments } from '@/pages/viewer/hooks/useComments';
 
 interface CommentsContainerProps {
   onClose: () => void;
+  onCommentAdded: () => void;
   videoId: number;
 }
 
 const CommentsContainer: React.FC<CommentsContainerProps> = ({
   onClose,
+  onCommentAdded,
   videoId,
 }) => {
   const {
@@ -26,11 +30,17 @@ const CommentsContainer: React.FC<CommentsContainerProps> = ({
     handleDeleteComment,
     isLoading,
     error,
-  } = useComments(videoId);
+  } = useComments({ videoId, onCommentAdded });
 
-  console.log('Fetched comments:', comments);
+  const [isComposing, setIsComposing] = useState(false);
 
-  if (isLoading) return <div>Loading...</div>;
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !isComposing) {
+      handleCommentSubmit();
+    }
+  };
+
+  if (isLoading) return <Spinner />;
   if (error) return <div>Error loading comments.</div>;
 
   return (
@@ -62,7 +72,9 @@ const CommentsContainer: React.FC<CommentsContainerProps> = ({
           placeholder='댓글을 입력하세요!'
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleCommentSubmit()}
+          onKeyDown={handleKeyPress}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
         />
         <Styles.SubmitButton onClick={handleCommentSubmit}>
           보내기
