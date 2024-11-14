@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { usefetchTaskStatus } from '@/pages/auto/apis';
+import { useFetchTaskStatus } from '@/pages/auto/apis';
 
 import Loading from './Loading';
 
@@ -15,7 +15,7 @@ const ProgressView = ({
   const [processMessage, setprocessMessage] = useState<string>('');
   const task_id = sessionStorage.getItem('task_id');
 
-  const { data, refetch } = usefetchTaskStatus(task_id ?? ''); // 상태 요청
+  const { data, refetch } = useFetchTaskStatus(task_id ?? ''); // 상태 요청
 
   useEffect(() => {
     const pollingInterval = setInterval(async () => {
@@ -37,7 +37,7 @@ const ProgressView = ({
     return () => {
       clearInterval(pollingInterval);
     };
-  }, [task_id]);
+  }, [task_id, refetch, setProcessState]);
 
   const updateProgressBar = (status: string) => {
     switch (status) {

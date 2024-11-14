@@ -20,7 +20,7 @@
     "types": ["msw", "jest"]
   },
   "files": [],
-  "include": ["src"],
+  "include": ["src/**/*", "vite.config.ts"],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }

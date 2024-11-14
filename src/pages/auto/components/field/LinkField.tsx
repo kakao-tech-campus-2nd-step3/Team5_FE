@@ -40,6 +40,7 @@ const LinkField = ({ form }: LinkFieldProps) => {
 
         clearErrors('url');
       } catch (error) {
+        console.error('Error during URL validation:', error);
         setError('url', {
           type: 'manual',
           message: '유효하지 않은 URL입니다.',

@@ -12,7 +12,10 @@ interface CommentsContainerProps {
   videoId: number;
 }
 
-const CommentsContainer: React.FC<CommentsContainerProps> = ({ onClose, videoId }) => {
+const CommentsContainer: React.FC<CommentsContainerProps> = ({
+  onClose,
+  videoId,
+}) => {
   const {
     data: fetchedComments = [],
     isLoading,
@@ -27,8 +30,8 @@ const CommentsContainer: React.FC<CommentsContainerProps> = ({ onClose, videoId 
       { videoId, content: newComment },
       {
         onSuccess: (createdComment) => {
-          setComments((prevComments) => [...prevComments, createdComment]); 
-          setNewComment(''); 
+          setComments((prevComments) => [...prevComments, createdComment]);
+          setNewComment('');
         },
       }
     );

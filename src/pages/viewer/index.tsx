@@ -34,7 +34,10 @@ const ShortsViewerPage: React.FC = () => {
           </VideoActions>
         </ContentContainer>
         {showComments && (
-          <CommentsContainer videoId={Number(videoId)} onClose={() => setShowComments(false)} />
+          <CommentsContainer
+            videoId={Number(videoId)}
+            onClose={() => setShowComments(false)}
+          />
         )}
       </MainContent>
     </PageContainer>

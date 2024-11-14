@@ -25,7 +25,7 @@ const ShortsThumbnailCard: React.FC<ShortsCardProps> = ({
 
   const handleShortsClick = () => {
     navigate(`/videos/${videoId}`);
-  }
+  };
 
   return (
     <Card onClick={handleShortsClick}>
