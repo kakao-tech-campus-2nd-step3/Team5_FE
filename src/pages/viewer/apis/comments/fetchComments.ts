@@ -1,4 +1,5 @@
 import { fetchInstance } from '@/apis/instance/Instance.api';
+
 import { useQuery } from '@tanstack/react-query';
 
 export interface Comment {
@@ -11,7 +12,8 @@ export interface Comment {
   content: string;
 }
 
-const fetchCommentsPath = (videoId: number) => `/api/videos/${videoId}/comments`;
+const fetchCommentsPath = (videoId: number) =>
+  `/api/videos/${videoId}/comments`;
 
 export const fetchComments = async (videoId: number): Promise<Comment[]> => {
   const response = await fetchInstance.get(fetchCommentsPath(videoId));
