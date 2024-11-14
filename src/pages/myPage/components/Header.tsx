@@ -10,7 +10,7 @@ const MyPageHeader = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          Admin 님, 환영합니다!
+          환영합니다!
         </UserText>
         <TabMenu>
           <TabItem
