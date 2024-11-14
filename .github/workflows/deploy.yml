@@ -1,8 +1,9 @@
-name: Deploy to Amazon s3
+name: Deploy to Amazon S3
 
 on:
   push:
     branches: ['feat/api-auto']
+
 env:
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: talkak-fe
@@ -16,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code.
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
 
       - name: Cache node modules
         uses: actions/cache@v4
@@ -27,15 +28,10 @@ jobs:
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
 
-      - name: Install pnpm
-        run: |
-          npm install -g pnpm
-
       - name: Create .env file
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
           echo "VITE_FAST_API_URL=${{ secrets.VITE_FAST_API_URL }}" >> .env
-
 
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile --force
@@ -57,9 +53,5 @@ jobs:
         run: |
           aws s3 cp \
             --recursive \
-            --region ap-northeast-2 \
-            ./dist s3://${{env.S3_BUCKET_NAME}}
-
-      - name: Invalidate CloudFront Cache
-        run:
-          aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_DISTRIBUTION_ID }} --paths "/*"
+            --region ${AWS_REGION} \
+            ./dist s3://${{ env.S3_BUCKET_NAME }}
