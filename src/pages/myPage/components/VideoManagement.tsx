@@ -7,7 +7,7 @@ const VideoManagement = () => {
     <>
       <SectionTitle>영상 관리</SectionTitle>
       <VideoSection>
-        <ShortsGrid />
+        <ShortsGrid categoryId={1} />
       </VideoSection>
     </>
   );
