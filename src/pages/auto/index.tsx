@@ -3,15 +3,10 @@ import styled from 'styled-components';
 import { ConvertForm, FinalView, Process } from '@/pages/auto/components';
 import { ProgressView } from '@/pages/auto/components';
 
-import { usePreventRefresh } from '@/hooks';
-
 import { useProcessContext } from './provider';
 
 const AutoShortsPage = () => {
   const { processState, setProcessState } = useProcessContext();
-
-  const shouldPrevent = processState === 'progress' || processState === 'final';
-  usePreventRefresh(shouldPrevent);
 
   return (
     <AutoContainer>
