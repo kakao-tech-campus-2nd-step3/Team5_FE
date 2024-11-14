@@ -28,7 +28,7 @@ const CategoriesField = ({ form }: CategoriesFieldProps) => {
       render={({ field }) => (
         <FormItem>
           <FormLabel className='text-xl'>
-            선호하는 카테고리를 선택해주세요. (최대 3개)
+            선호하는 카테고리를 선택해주세요. (3개 입력해주세요.)
           </FormLabel>
           <FormControl>
             <ButtonWrapper>

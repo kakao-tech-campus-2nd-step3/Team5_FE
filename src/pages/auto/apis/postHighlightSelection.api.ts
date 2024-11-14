@@ -1,4 +1,4 @@
-import { fetchInstance } from '@/apis';
+import { fetchFastInstance } from '@/apis';
 
 export type hightlightSelectionRequestProps = {
   index: number;
@@ -24,7 +24,7 @@ export type hightlightSelectionResponseProps = {
   createdAt: Date;
 };
 
-const postHighlightSelectionPath = () => '/api/videos/highlight-selection';
+const postHighlightSelectionPath = () => '/select-highlight';
 
 export const postHighlightSelection = async ({
   index,
@@ -33,7 +33,7 @@ export const postHighlightSelection = async ({
   memberId,
   categoryId,
 }: hightlightSelectionRequestProps): Promise<hightlightSelectionResponseProps> => {
-  const response = await fetchInstance.post(postHighlightSelectionPath(), {
+  const response = await fetchFastInstance.post(postHighlightSelectionPath(), {
     index,
     fileName,
     title,

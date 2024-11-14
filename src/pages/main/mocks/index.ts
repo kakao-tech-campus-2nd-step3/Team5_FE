@@ -21,11 +21,11 @@ export const FetchShortsHandler = [
     const mockData: ShortsVideoProps[] = Array.from(
       { length: 50 },
       (_, index) => ({
-        videoId: index + 1,
+        video_id: index + 1,
         thumbnail: mockImg,
         title: `Mocking Data ${index + 1}`,
-        memberId: index % 5,
-        createdAt: new Date().toISOString(),
+        member_id: index % 5,
+        created_at: new Date().toISOString(),
       })
     );
 

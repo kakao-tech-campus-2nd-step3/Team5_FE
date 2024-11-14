@@ -32,7 +32,7 @@ const ProgressView = ({
           updateProgressBar(refetchedData?.status ?? '');
         }
       }
-    }, 8000);
+    }, 5000);
 
     return () => {
       clearInterval(pollingInterval);
