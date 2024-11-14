@@ -35,7 +35,6 @@ const ShortsViewerPage: React.FC = () => {
       setLikeCount(shortsData.like_count);
       setCommentsCount(shortsData.comments_count);
 
-      // 로컬 스토리지에서 좋아요 상태 확인
       const storedLikeStatus = localStorage.getItem(`liked_video_${videoId}`);
       if (storedLikeStatus === 'true') {
         setHasLiked(true);
@@ -111,6 +110,7 @@ const ShortsViewerPage: React.FC = () => {
             videoId={Number(videoId)}
             onClose={() => setShowComments(false)}
             onCommentAdded={handleCommentAdded}
+            currentUserProfileImage={shortsData.member_info.image_url}
           />
         )}
       </MainContent>
