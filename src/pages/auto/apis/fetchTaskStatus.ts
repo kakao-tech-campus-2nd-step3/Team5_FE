@@ -20,10 +20,10 @@ const fetchTaskStatus = async (
 
 export const usefetchTaskStatus = (task_id: string) => {
   const accessToken = localStorage.getItem('accessToken');
-
+  // console.log('API 요청 시작');
   return useQuery<fetchTaskStatusResponseProps, Error>({
-    queryKey: [fetchTaskStatusPath],
+    queryKey: [fetchTaskStatusPath(task_id)],
     queryFn: () => fetchTaskStatus(task_id),
-    enabled: !!accessToken,
+    enabled: !task_id && !!accessToken,
   });
 };
