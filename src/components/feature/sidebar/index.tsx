@@ -86,10 +86,21 @@ const categories = [
 const Sidebar = () => {
   const navigate = useNavigate();
 
-  const { processState } = useProcessContext();
+  const { processState, setProcessState } = useProcessContext();
   // console.log(processState);
 
   const handleClick = (path: string) => {
+    // 현재 위치가 '/auto' 페이지이고, processState가 final일 경우 경고창 표시
+    if (location.pathname === '/auto' && processState === 'final') {
+      const userConfirmed = window.confirm(
+        '⚠️ 영상 변환이 완료된 상태입니다. 페이지를 이동하면 데이터가 손실될 수 있습니다. 이동하시겠습니까?'
+      );
+      if (!userConfirmed) return;
+
+      setProcessState('initial');
+    }
+
+    // 페이지 이동
     navigate(path);
   };
 
