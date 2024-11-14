@@ -12,8 +12,9 @@ export interface Comment {
   content: string;
 }
 
-const fetchCommentsPath = (videoId: number) =>
-  `/api/videos/${videoId}/comments`;
+
+const fetchCommentsPath = (videoId: number) => `/api/videos/${videoId}/comments`;
+
 
 export const fetchComments = async (videoId: number): Promise<Comment[]> => {
   const response = await fetchInstance.get(fetchCommentsPath(videoId));
@@ -30,3 +31,4 @@ export const useFetchComments = (videoId: number) => {
 
   return { data, isLoading, error, refetch };
 };
+
