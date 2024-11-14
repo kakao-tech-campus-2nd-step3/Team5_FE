@@ -30,6 +30,9 @@ const ShortsViewerPage: React.FC = () => {
   );
   const [hasLiked, setHasLiked] = useState(false);
 
+  // 현재 로그인한 사용자의 프로필 이미지 가져오기
+  const currentUserProfileImage = sessionStorage.getItem('image_url') || '';
+
   useEffect(() => {
     if (shortsData) {
       setLikeCount(shortsData.like_count);
@@ -110,7 +113,7 @@ const ShortsViewerPage: React.FC = () => {
             videoId={Number(videoId)}
             onClose={() => setShowComments(false)}
             onCommentAdded={handleCommentAdded}
-            currentUserProfileImage={shortsData.member_info.image_url}
+            currentUserProfileImage={currentUserProfileImage}
           />
         )}
       </MainContent>
