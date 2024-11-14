@@ -7,7 +7,11 @@ const VideoManagement = () => {
     <>
       <SectionTitle>영상 관리</SectionTitle>
       <VideoSection>
+<<<<<<< HEAD
         <ShortsGrid categoryId={0} />
+=======
+        <ShortsGrid categoryId={1} />
+>>>>>>> f4a3d7b (Feat: 더미 데이터)
       </VideoSection>
     </>
   );
