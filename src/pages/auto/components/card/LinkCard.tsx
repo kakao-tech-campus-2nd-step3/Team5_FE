@@ -4,6 +4,10 @@ import {
   CardContent,
   CardTitle,
   CardDescription,
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
 } from '@/components';
 
 import { useLinkContext } from '@/pages/auto/provider';
@@ -23,11 +27,13 @@ const LinkCard = () => {
           ratio={5 / 4}
           className='bg-muted flex justify-center align-middle'
         >
-          {linkState.url ? (
-            <iframe src={linkState.url} />
-          ) : (
+          {linkState.url && (
             <img
-              src='https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80'
+              src={
+                linkState.url
+                  ? linkState.url
+                  : 'https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80'
+              }
               alt='Photo by Drew Beamer'
               className='h-full w-full rounded-md object-cover'
             />
@@ -35,9 +41,21 @@ const LinkCard = () => {
         </AspectRatio>
       </CardHeader>
       <CardContent>
-        <CardTitle className={cn('text-2xl font-bold')}>
-          {linkState.title || 'Default Title'}
-        </CardTitle>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <CardTitle
+                className={cn('text-2xl font-bold line-clamp-1')}
+                style={{ cursor: 'pointer' }}
+              >
+                {linkState.title || 'Default Title'}
+              </CardTitle>
+            </TooltipTrigger>
+            <TooltipContent side='top'>
+              {linkState.title || 'Default Title'}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <CardDescription className={cn('text-black font-bold')}>
           {linkState.user || 'Default User'}
         </CardDescription>
