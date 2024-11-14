@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaThumbsUp, FaComment } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 
@@ -6,11 +6,10 @@ import styled from 'styled-components';
 
 import { Spinner } from '@/components';
 
+import { useLikeVideo } from '@/pages/viewer/apis/reactions/likeVideo';
 import { useFetchShortDetail } from '@/pages/viewer/apis/shorts/fetchShortsDetail';
 import CommentsContainer from '@/pages/viewer/components/CommentsContainer';
 import ShortsCard from '@/pages/viewer/components/ShortsCard';
-
-import { s } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 
 const ShortsViewerPage: React.FC = () => {
   const { videoId } = useParams<{ videoId: string }>();
@@ -20,9 +19,48 @@ const ShortsViewerPage: React.FC = () => {
     isLoading,
     error,
   } = useFetchShortDetail(Number(videoId));
-  const [showComments, setShowComments] = useState(false);
+  const { mutate: likeVideo } = useLikeVideo();
 
-  console.log('Shorts data:', shortsData);
+  const [showComments, setShowComments] = useState(false);
+  const [likeCount, setLikeCount] = useState<number | null>(
+    shortsData?.like_count ?? null
+  );
+  const [commentsCount, setCommentsCount] = useState<number | null>(
+    shortsData?.comments_count ?? null
+  );
+
+  useEffect(() => {
+    if (shortsData) {
+      setLikeCount(shortsData.like_count);
+      setCommentsCount(shortsData.comments_count);
+    }
+  }, [shortsData]);
+
+  const handleLike = () => {
+    const memberId = shortsData?.member_info?.id;
+
+    if (memberId !== undefined) {
+      likeVideo(
+        { videoId: Number(videoId), memberId },
+        {
+          onSuccess: () => {
+            setLikeCount((prevCount) =>
+              prevCount != null ? prevCount + 1 : 1
+            );
+          },
+          onError: (error) => {
+            console.error('좋아요에 실패하였습니다.', error);
+          },
+        }
+      );
+    } else {
+      console.error('Member ID 가 정의되지 않았습니다.');
+    }
+  };
+
+  const handleCommentAdded = () => {
+    setCommentsCount((prevCount) => (prevCount != null ? prevCount + 1 : 1));
+  };
 
   if (isLoading) {
     return <Spinner />;
@@ -40,18 +78,18 @@ const ShortsViewerPage: React.FC = () => {
             video_url={shortsData.video_url}
             member_info={shortsData.member_info}
             title={shortsData.title}
-            like_count={shortsData.like_count}
+            like_count={likeCount || 0}
             view_count={shortsData.view_count}
-            comments_count={shortsData.comments_count}
+            comments_count={commentsCount || 0}
           />
           <VideoActions>
-            <Action>
+            <Action onClick={handleLike}>
               <FaThumbsUp size={24} />
-              <ActionText>{shortsData.like_count}</ActionText>
+              <ActionText>{likeCount}</ActionText>
             </Action>
             <Action onClick={() => setShowComments(!showComments)}>
               <FaComment size={24} />
-              <ActionText>{shortsData.comments_count}</ActionText>
+              <ActionText>{commentsCount}</ActionText>{' '}
             </Action>
           </VideoActions>
         </ContentContainer>
@@ -59,6 +97,7 @@ const ShortsViewerPage: React.FC = () => {
           <CommentsContainer
             videoId={Number(videoId)}
             onClose={() => setShowComments(false)}
+            onCommentAdded={handleCommentAdded}
           />
         )}
       </MainContent>
