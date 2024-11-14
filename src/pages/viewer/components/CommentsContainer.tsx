@@ -10,12 +10,14 @@ interface CommentsContainerProps {
   onClose: () => void;
   onCommentAdded: () => void;
   videoId: number;
+  currentUserProfileImage: string;
 }
 
 const CommentsContainer: React.FC<CommentsContainerProps> = ({
   onClose,
   onCommentAdded,
   videoId,
+  currentUserProfileImage,
 }) => {
   const {
     comments,
@@ -67,7 +69,7 @@ const CommentsContainer: React.FC<CommentsContainerProps> = ({
         )}
       </Styles.CommentsList>
       <Styles.CommentInputContainer>
-        <Styles.Avatar />
+        <Styles.Avatar src={currentUserProfileImage} alt='profile' />
         <Styles.CommentInput
           placeholder='댓글을 입력하세요!'
           value={newComment}
