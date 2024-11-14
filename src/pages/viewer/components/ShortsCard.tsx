@@ -2,34 +2,37 @@ import React from 'react';
 
 import * as Styles from '@/pages/viewer/components/ShortsCard.style';
 
-interface ShortsCardProps {
-  short: {
+export interface ShortsCardProps {
+  id: number;
+  title: string;
+  category_id: number;
+  video_url: string;
+  member_info: {
     id: number;
-    title: string;
-    categoryId: number;
-    videoUrl: string;
-    memberInfo: {
-      id: number;
-      imageUrl: string;
-      username: string;
-    };
+    image_url: string;
+    username: string;
   };
+  like_count: number;
+  view_count: number;
+  comments_count: number;
 }
 
-const ShortsCard: React.FC<ShortsCardProps> = ({ short }) => {
+const ShortsCard: React.FC<ShortsCardProps> = ({ video_url, member_info, title }) => {
   return (
     <Styles.CardContainer>
       <Styles.VideoContainer>
-        <Styles.Video controls src={short.videoUrl} />
+        <Styles.Video controls src={video_url} />
         <Styles.InfoContainer>
           <Styles.ProfileSection>
             <Styles.ProfileImage
-              src={short.memberInfo.imageUrl}
+              src={member_info.image_url}
               alt='Profile'
             />
-            <Styles.ProfileName>{short.memberInfo.username}</Styles.ProfileName>
+            <Styles.ProfileName>
+              {member_info?.username}
+            </Styles.ProfileName>
           </Styles.ProfileSection>
-          <Styles.Title>{short.title}</Styles.Title>
+          <Styles.Title>{title}</Styles.Title>
         </Styles.InfoContainer>
       </Styles.VideoContainer>
     </Styles.CardContainer>

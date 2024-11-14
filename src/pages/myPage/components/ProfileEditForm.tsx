@@ -1,3 +1,4 @@
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import styled from 'styled-components';
@@ -5,6 +6,7 @@ import { z } from 'zod';
 
 import { Form, Button } from '@/components';
 
+import { useUpdateMyInfo } from '@/pages/myPage/apis/updateMyInfo';
 import ProfileEditField from '@/pages/myPage/components/ProfileEditField';
 import { ProfileSchema } from '@/pages/myPage/utils/ProfileSchema';
 
@@ -12,35 +14,64 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 type ProfileFormValues = z.infer<typeof ProfileSchema>;
 
-const ProfileEditForm = () => {
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(ProfileSchema),
-    defaultValues: {
-      gender: undefined,
-      age: undefined,
-      category: [],
-    },
-  });
+interface ProfileEditFormProps {
+  refetchMyInfo: () => void;
+}
 
-  const onSubmit = (data: ProfileFormValues) => {
-    console.log('Form submitted');
-    console.log(data);
-  };
+const ProfileEditForm: React.FC<ProfileEditFormProps> = React.memo(
+  ({ refetchMyInfo }) => {
+    const form = useForm<ProfileFormValues>({
+      resolver: zodResolver(ProfileSchema),
+      defaultValues: {
+        gender: undefined,
+        age: undefined,
+        category: [],
+      },
+    });
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormContainer>
-          <SectionTitle>개인정보 수정</SectionTitle>
-          <ProfileEditField form={form} />
-          <Button variant='default' type='submit'>
-            수정하기
-          </Button>
-        </FormContainer>
-      </form>
-    </Form>
-  );
-};
+    const { mutate: updateMyInfo } = useUpdateMyInfo();
+
+    const onSubmit = (data: ProfileFormValues) => {
+      const categoryMapping: { [key: string]: number } = {
+        음식: 1,
+        여행: 2,
+        게임: 3,
+        음악: 4,
+        스포츠: 5,
+      };
+
+      const payload = {
+        gender: data.gender || '',
+        age: data.age || '',
+        categories: data.category.map((cat) => categoryMapping[cat]),
+      };
+
+      updateMyInfo(payload, {
+        onSuccess: (response: any) => {
+          console.log('정보가 성공적으로 업데이트되었습니다:', response);
+          refetchMyInfo();
+        },
+        onError: (error: any) => {
+          console.error('정보 업데이트에 실패하였습니다:', error);
+        },
+      });
+    };
+
+    return (
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FormContainer>
+            <SectionTitle>개인정보 수정</SectionTitle>
+            <ProfileEditField form={form} />
+            <Button variant='default' type='submit'>
+              수정하기
+            </Button>
+          </FormContainer>
+        </form>
+      </Form>
+    );
+  }
+);
 
 export default ProfileEditForm;
 
@@ -54,6 +85,6 @@ const FormContainer = styled.div`
 const SectionTitle = styled.h3`
   font-size: 24px;
   font-weight: bold;
-  margin-top: 40px;
-  margin-bottom: 24px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 `;

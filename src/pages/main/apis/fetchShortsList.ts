@@ -3,11 +3,11 @@ import { fetchInstance } from '@/apis/instance';
 import { useQuery } from '@tanstack/react-query';
 
 export type ShortsVideoProps = {
-  videoId: number;
+  video_id: number;
   thumbnail: string;
   title: string;
-  memberId: number;
-  createdAt: string;
+  member_id: number;
+  created_at: string;
 };
 
 export type FetchShortsParams = {
@@ -33,17 +33,9 @@ export const fetchShortsByCategory = async (
 };
 
 export const useFetchShortsByCategory = (params: FetchShortsParams) => {
-  const accessToken = localStorage.getItem('accessToken');
-
-  return useQuery<ShortsVideoProps[], Error>({
-    queryKey: [
-      'fetchShortsByCategory',
-      params.categoryId,
-      params.page,
-      params.size,
-    ],
+  return useQuery<ShortsVideoProps[]>({
+    queryKey: ['fetchShortsByCategory', params.categoryId],
     queryFn: () => fetchShortsByCategory(params),
     staleTime: 1000 * 60 * 3,
-    enabled: !!accessToken,
   });
 };

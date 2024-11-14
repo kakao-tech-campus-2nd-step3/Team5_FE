@@ -5,12 +5,7 @@ import styled from 'styled-components';
 
 import { ShortsThumbnailCard, Spinner } from '@/components';
 
-import {
-  fetchShortsByCategory,
-  ShortsVideoProps,
-} from '@/pages/main/apis/fetchShortsList';
-
-import { useQuery } from '@tanstack/react-query';
+import { useFetchShortsByCategory } from '@/pages/main/apis/fetchShortsList';
 
 interface ShortsGridProps {
   categoryId: number;
@@ -24,15 +19,11 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
   const [position, setPosition] = useState(0);
   const [maxPosition, setMaxPosition] = useState(0);
 
-  // useQuery로 데이터를 가져옵니다.
   const {
     data: shortsData = [],
     isLoading,
     isError,
-  } = useQuery<ShortsVideoProps[]>({
-    queryKey: ['fetchShortsByCategory', categoryId],
-    queryFn: () => fetchShortsByCategory({ categoryId, page: 0, size: 10 }),
-  });
+  } = useFetchShortsByCategory({ categoryId });
 
   useEffect(() => {
     if (constraintsRef.current) {
@@ -42,11 +33,13 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
     }
   }, [shortsData]);
 
-  const handlePrev = () => {
+  const handlePrev = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setPosition((prev) => Math.min(prev + SLIDE_AMOUNT, 0));
   };
 
-  const handleNext = () => {
+  const handleNext = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setPosition((prev) => Math.max(prev - SLIDE_AMOUNT, maxPosition));
   };
 
@@ -71,10 +64,10 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
           {shortsData.map((short, index) => (
             <motion.div key={index} className='card-wrapper'>
               <ShortsThumbnailCard
-                videoId={short.videoId}
+                videoId={short.video_id}
                 image={{ src: short.thumbnail, alt: short.title }}
                 title={short.title}
-                timeAgo={short.createdAt}
+                timeAgo={short.created_at}
               />
             </motion.div>
           ))}

@@ -1,40 +1,117 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaThumbsUp, FaComment } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import { useFetchShort } from '@/pages/viewer/apis/useFetchShorts.api';
-import CommentsContainer from '@/pages/viewer/components/Comments';
+import { Spinner } from '@/components';
+
+import { useLikeVideo } from '@/pages/viewer/apis/reactions/likeVideo';
+import { useFetchShortDetail } from '@/pages/viewer/apis/shorts/fetchShortsDetail';
+import CommentsContainer from '@/pages/viewer/components/CommentsContainer';
 import ShortsCard from '@/pages/viewer/components/ShortsCard';
 
 const ShortsViewerPage: React.FC = () => {
   const { videoId } = useParams<{ videoId: string }>();
-  const { data: short, isLoading, error } = useFetchShort(Number(videoId));
-  const [showComments, setShowComments] = useState(false);
 
-  if (isLoading) return <div>Loading...</div>;
+  const {
+    data: shortsData,
+    isLoading,
+    error,
+  } = useFetchShortDetail(Number(videoId));
+  const { mutate: likeVideo } = useLikeVideo();
+
+  const [showComments, setShowComments] = useState(false);
+  const [likeCount, setLikeCount] = useState<number | null>(
+    shortsData?.like_count ?? null
+  );
+  const [commentsCount, setCommentsCount] = useState<number | null>(
+    shortsData?.comments_count ?? null
+  );
+  const [hasLiked, setHasLiked] = useState(false);
+
+  useEffect(() => {
+    if (shortsData) {
+      setLikeCount(shortsData.like_count);
+      setCommentsCount(shortsData.comments_count);
+
+      const storedLikeStatus = localStorage.getItem(`liked_video_${videoId}`);
+      if (storedLikeStatus === 'true') {
+        setHasLiked(true);
+      } else {
+        setHasLiked(false);
+      }
+    }
+  }, [shortsData, videoId]);
+
+  const handleLike = () => {
+    if (hasLiked) return;
+
+    const memberId = shortsData?.member_info?.id;
+
+    if (memberId !== undefined) {
+      likeVideo(
+        { videoId: Number(videoId), memberId },
+        {
+          onSuccess: () => {
+            setLikeCount((prevCount) =>
+              prevCount != null ? prevCount + 1 : 1
+            );
+            setHasLiked(true);
+            localStorage.setItem(`liked_video_${videoId}`, 'true');
+          },
+          onError: (error) => {
+            console.error('좋아요에 실패하였습니다.', error);
+          },
+        }
+      );
+    } else {
+      console.error('Member ID 가 정의되지 않았습니다.');
+    }
+  };
+
+  const handleCommentAdded = () => {
+    setCommentsCount((prevCount) => (prevCount != null ? prevCount + 1 : 1));
+  };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
   if (error) return <div>Error loading video.</div>;
-  if (!short) return <div>No video found.</div>;
+  if (!shortsData) return <div>No video found.</div>;
 
   return (
     <PageContainer>
       <MainContent>
         <ContentContainer $isComments={showComments}>
-          <ShortsCard short={short} />
+          <ShortsCard
+            id={shortsData.id}
+            category_id={shortsData.category_id}
+            video_url={shortsData.video_url}
+            member_info={shortsData.member_info}
+            title={shortsData.title}
+            like_count={likeCount || 0}
+            view_count={shortsData.view_count}
+            comments_count={commentsCount || 0}
+          />
           <VideoActions>
-            <Action>
+            <Action onClick={handleLike} disabled={hasLiked}>
               <FaThumbsUp size={24} />
-              <ActionText>{short.likeCount}</ActionText>
+              <ActionText>{likeCount}</ActionText>
             </Action>
             <Action onClick={() => setShowComments(!showComments)}>
               <FaComment size={24} />
-              <ActionText>{short.commentsCount}</ActionText>
+              <ActionText>{commentsCount}</ActionText>
             </Action>
           </VideoActions>
         </ContentContainer>
         {showComments && (
-          <CommentsContainer videoId={Number(videoId)} onClose={() => setShowComments(false)} />
+          <CommentsContainer
+            videoId={Number(videoId)}
+            onClose={() => setShowComments(false)}
+            onCommentAdded={handleCommentAdded}
+            currentUserProfileImage={shortsData.member_info.image_url}
+          />
         )}
       </MainContent>
     </PageContainer>
@@ -79,15 +156,15 @@ const VideoActions = styled.div`
   margin-left: 20px;
 `;
 
-const Action = styled.div`
+const Action = styled.div<{ disabled?: boolean }>`
   display: flex;
   align-items: center;
   font-size: 18px;
   gap: 8px;
-  color: #555;
-  cursor: pointer;
+  color: ${({ disabled }) => (disabled ? '#ccc' : '#555')};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   &:hover {
-    color: #111;
+    color: ${({ disabled }) => (disabled ? '#ccc' : '#111')};
   }
 `;
 

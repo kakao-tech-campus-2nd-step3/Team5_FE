@@ -112,7 +112,6 @@ const Sidebar = () => {
           <Link
             to={label}
             smooth={true}
-            spy={true}
             duration={500}
             offset={-80}
             containerId='scrollContainer'
