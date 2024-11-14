@@ -28,15 +28,26 @@ const ShortsViewerPage: React.FC = () => {
   const [commentsCount, setCommentsCount] = useState<number | null>(
     shortsData?.comments_count ?? null
   );
+  const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
     if (shortsData) {
       setLikeCount(shortsData.like_count);
       setCommentsCount(shortsData.comments_count);
+
+      // 로컬 스토리지에서 좋아요 상태 확인
+      const storedLikeStatus = localStorage.getItem(`liked_video_${videoId}`);
+      if (storedLikeStatus === 'true') {
+        setHasLiked(true);
+      } else {
+        setHasLiked(false);
+      }
     }
-  }, [shortsData]);
+  }, [shortsData, videoId]);
 
   const handleLike = () => {
+    if (hasLiked) return;
+
     const memberId = shortsData?.member_info?.id;
 
     if (memberId !== undefined) {
@@ -47,6 +58,8 @@ const ShortsViewerPage: React.FC = () => {
             setLikeCount((prevCount) =>
               prevCount != null ? prevCount + 1 : 1
             );
+            setHasLiked(true);
+            localStorage.setItem(`liked_video_${videoId}`, 'true');
           },
           onError: (error) => {
             console.error('좋아요에 실패하였습니다.', error);
@@ -83,13 +96,13 @@ const ShortsViewerPage: React.FC = () => {
             comments_count={commentsCount || 0}
           />
           <VideoActions>
-            <Action onClick={handleLike}>
+            <Action onClick={handleLike} disabled={hasLiked}>
               <FaThumbsUp size={24} />
               <ActionText>{likeCount}</ActionText>
             </Action>
             <Action onClick={() => setShowComments(!showComments)}>
               <FaComment size={24} />
-              <ActionText>{commentsCount}</ActionText>{' '}
+              <ActionText>{commentsCount}</ActionText>
             </Action>
           </VideoActions>
         </ContentContainer>
@@ -143,15 +156,15 @@ const VideoActions = styled.div`
   margin-left: 20px;
 `;
 
-const Action = styled.div`
+const Action = styled.div<{ disabled?: boolean }>`
   display: flex;
   align-items: center;
   font-size: 18px;
   gap: 8px;
-  color: #555;
-  cursor: pointer;
+  color: ${({ disabled }) => (disabled ? '#ccc' : '#555')};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   &:hover {
-    color: #111;
+    color: ${({ disabled }) => (disabled ? '#ccc' : '#111')};
   }
 `;
 
