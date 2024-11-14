@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import styled from 'styled-components';
@@ -18,7 +18,7 @@ interface ProfileEditFormProps {
   refetchMyInfo: () => void;
 }
 
-const ProfileEditForm: React.FC<ProfileEditFormProps> = React.memo(
+const ProfileEditForm: React.FC<ProfileEditFormProps> = memo(
   ({ refetchMyInfo }) => {
     const form = useForm<ProfileFormValues>({
       resolver: zodResolver(ProfileSchema),

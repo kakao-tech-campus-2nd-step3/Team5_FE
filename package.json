@@ -84,10 +84,6 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "^2.31.0",
-<<<<<<< HEAD
-    "eslint-plugin-jest-dom": "^5.4.0",
-=======
->>>>>>> 6844c8b (fix: eslint 수정 밎 정상화)
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-prettier": "^5.2.1",

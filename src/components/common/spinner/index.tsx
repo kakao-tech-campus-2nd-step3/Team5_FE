@@ -1,5 +1,4 @@
-import { keyframes } from 'styled-components';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 type Props = {
   size?: number;
