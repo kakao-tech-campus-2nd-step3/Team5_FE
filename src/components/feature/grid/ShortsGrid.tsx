@@ -51,8 +51,6 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
     return <div>Error loading shorts</div>;
   }
 
-  console.log("Fetched shortsData:", shortsData);
-
   return (
     <SliderWrapper>
       <Button onClick={handlePrev} disabled={position === 0}>
