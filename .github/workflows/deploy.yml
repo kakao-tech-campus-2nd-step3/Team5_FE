@@ -5,7 +5,7 @@ on:
     branches: ['feat/api-auto']
 env:
   AWS_REGION: ap-northeast-2
-  S3_BUCKET_NAME: gdsc-knu.com
+  S3_BUCKET_NAME: talkak-fe
 
 permissions:
   contents: read
