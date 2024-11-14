@@ -1,12 +1,36 @@
+import { useEffect } from 'react';
+
 import styled from 'styled-components';
 
-import { ConvertForm, FinalView, Process } from '@/pages/auto/components';
-import { ProgressView } from '@/pages/auto/components';
+import {
+  ConvertForm,
+  FinalView,
+  Process,
+  ProgressView,
+} from '@/pages/auto/components';
+
+import { usePreventRefresh } from '@/hooks';
 
 import { useProcessContext } from './provider';
 
 const AutoShortsPage = () => {
   const { processState, setProcessState } = useProcessContext();
+
+  const shouldPrevent = processState === 'final';
+  usePreventRefresh(shouldPrevent);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (shouldPrevent) {
+        sessionStorage.setItem('processState', 'initial');
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [shouldPrevent]);
 
   return (
     <AutoContainer>
