@@ -1,4 +1,5 @@
 import { fetchInstance } from '@/apis/instance/Instance.api';
+
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 
 export interface CreateCommentParams {
@@ -16,12 +17,21 @@ export interface CommentResponse {
   content: string;
 }
 
-export const createComment = async ({ videoId, content }: CreateCommentParams): Promise<CommentResponse> => {
-  const response = await fetchInstance.post(`/api/videos/${videoId}/comments`, { content });
+export const createComment = async ({
+  videoId,
+  content,
+}: CreateCommentParams): Promise<CommentResponse> => {
+  const response = await fetchInstance.post(`/api/videos/${videoId}/comments`, {
+    content,
+  });
   return response.data;
 };
 
-export const useCreateComment = (): UseMutationResult<CommentResponse, Error, CreateCommentParams> => {
+export const useCreateComment = (): UseMutationResult<
+  CommentResponse,
+  Error,
+  CreateCommentParams
+> => {
   return useMutation<CommentResponse, Error, CreateCommentParams>({
     mutationFn: createComment,
   });
