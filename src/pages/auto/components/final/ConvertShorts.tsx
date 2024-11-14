@@ -1,17 +1,43 @@
+import { useEffect, useState } from 'react';
+
 import styled from 'styled-components';
 
 import { LazyLoadImg } from '@/components';
 
+import { fetchSelectHighlight } from '@/pages/auto/apis';
+import type { fetchSelectHighlightResponseProps } from '@/pages/auto/apis';
+
 import conver_img from '@/assets/convert_img.png';
 
 const ConvertShorts = () => {
+  const [response, setResponse] =
+    useState<fetchSelectHighlightResponseProps | null>(null);
+  const taskId = sessionStorage.getItem('task_id');
+
+  // taskId가 있을 때만 API 요청
+  useEffect(() => {
+    const fetchData = async () => {
+      if (taskId) {
+        try {
+          const data = await fetchSelectHighlight(taskId);
+          setResponse(data);
+          // console.log('response:', data);
+        } catch (error) {
+          console.error('Error fetching highlight data:', error);
+        }
+      }
+    };
+
+    fetchData();
+  }, [taskId]);
+
   return (
     <ShortContainer>
       <LazyLoadImg image={{ src: conver_img, alt: '' }} />
 
       <TextContainer gap='80px'>
         <TextContainer gap='16px'>
-          <MainTitle>Youtube Shorts Title</MainTitle>
+          <MainTitle>{response?.dto?.title}</MainTitle>
           <SubText>5JoSama</SubText>
           <CategoryBox>Fashion</CategoryBox>
         </TextContainer>
