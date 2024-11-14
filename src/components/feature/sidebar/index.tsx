@@ -23,7 +23,7 @@ import {
 
 import { useProcessContext, ProcessState } from '@/pages/auto/provider';
 
-import Logo from '@/assets/logo.png';
+import Logo from '@/assets/Logo.png';
 
 import { TooltipProvider } from '@radix-ui/react-tooltip';
 
