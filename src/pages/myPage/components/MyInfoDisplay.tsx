@@ -54,26 +54,26 @@ export default MyInfoDisplay;
 const Card = styled.div`
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  max-width: 400px;
-  margin: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  max-width: 500px;
+  margin: 20px auto;
 `;
 
 const CardHeader = styled.h3`
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   color: #333;
-  margin-bottom: 16px;
   text-align: center;
   border-bottom: 1px solid #eaeaea;
-  padding-bottom: 8px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
 `;
 
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 `;
 
 const InfoItem = styled.div`
@@ -81,7 +81,7 @@ const InfoItem = styled.div`
   align-items: center;
   font-size: 16px;
   color: #555;
-  padding: 8px 0;
+  padding: 10px 0;
   border-bottom: 1px solid #f0f0f0;
 
   &:last-child {
@@ -90,15 +90,16 @@ const InfoItem = styled.div`
 `;
 
 const IconContainer = styled.div`
-  font-size: 18px;
+  font-size: 22px;
   color: #007bff;
-  margin-right: 8px;
+  margin-right: 12px;
 `;
 
 const Label = styled.span`
   font-weight: bold;
   color: #333;
   margin-right: 8px;
+  flex-shrink: 0;
 `;
 
 const Value = styled.span`
@@ -118,7 +119,7 @@ const CategoryItem = styled.li`
   background-color: #007bff;
   color: #fff;
   border-radius: 8px;
-  padding: 4px 8px;
+  padding: 4px 12px;
   font-size: 14px;
 `;
 
