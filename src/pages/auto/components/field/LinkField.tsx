@@ -55,7 +55,7 @@ const LinkField = ({ form }: LinkFieldProps) => {
     return () => {
       validateUrl.cancel();
     };
-  }, [linkValue, setError, clearErrors]);
+  }, [linkValue, setError, clearErrors, setLinkState]);
 
   return (
     <FormField

@@ -15,12 +15,7 @@ const categoryMap: Record<number, string> = {
 };
 
 type ConvertShortsProps = {
-  onSelectVideo: (
-    index: number,
-    url: string,
-    title: string,
-    category_id: number
-  ) => void;
+  onSelectVideo: (index: number, title: string, category_id: number) => void;
 };
 
 const ConvertShorts = ({ onSelectVideo }: ConvertShortsProps) => {
@@ -54,12 +49,11 @@ const ConvertShorts = ({ onSelectVideo }: ConvertShortsProps) => {
 
   const handleVideoClick = (
     index: number,
-    url: string,
     title: string,
     categoryId: number
   ) => {
     setSelectedIndex(index);
-    onSelectVideo(index, url, title, categoryId);
+    onSelectVideo(index, title, categoryId);
   };
 
   return (
@@ -72,7 +66,7 @@ const ConvertShorts = ({ onSelectVideo }: ConvertShortsProps) => {
               url={url}
               isSelected={selectedIndex === index}
               onClick={() =>
-                handleVideoClick(index, url, title ?? '', categoryId ?? -1)
+                handleVideoClick(index, title ?? '', categoryId ?? -1)
               }
             />
           ))

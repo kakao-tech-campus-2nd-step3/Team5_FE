@@ -11,24 +11,23 @@ import ConvertShorts from './ConvertShorts';
 
 const FinalView = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
+
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const [titles, setTitle] = useState<string | null>(null);
 
   const handleSelectVideo = (
     index: number,
-    url: string,
+
     title: string,
     category_id: number
   ) => {
     setSelectedIndex(index);
-    setSelectedUrl(url);
     setCategoryId(category_id);
     setTitle(title);
   };
 
   const handleUpload = async () => {
-    if (selectedIndex === null || !selectedUrl) {
+    if (selectedIndex === null) {
       alert('비디오를 선택해주세요.');
       return;
     }
@@ -48,7 +47,7 @@ const FinalView = () => {
       // console.log({ index: selectedIndex, s3Url: selectedUrl, pythonDto });
       const response = await postHighlightSelection({
         index: selectedIndex,
-        s3Url: selectedUrl,
+        fileName: sessionStorage.getItem('task_id') ?? '',
         title,
         memberId,
         categoryId: categoryId ?? 0,
