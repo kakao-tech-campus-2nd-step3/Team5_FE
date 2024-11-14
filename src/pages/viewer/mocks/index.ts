@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-import type { ShortsProps } from '@/pages/viewer/apis/shorts/fetchShortsDetail';
+import type { ShortsCardProps } from '@/pages/viewer/components/ShortsCard';
 
 import sampleVideo from '@/assets/Sample_video.mp4';
 
@@ -173,19 +173,19 @@ export const ViewShortsHandler = [
       );
     }
 
-    const mockVideo: ShortsProps = {
+    const mockVideo: ShortsCardProps = {
       id: videoIdNumber,
       title: `Video ${videoIdNumber}`,
-      categoryId: 1,
-      videoUrl: sampleVideo,
-      memberInfo: {
+      category_id: 1,
+      video_url: sampleVideo,
+      member_info: {
         id: videoIdNumber % 5,
-        imageUrl: `https://i.pravatar.cc/150?img=${(videoIdNumber % 10) + 1}`,
+        image_url: `https://i.pravatar.cc/150?img=${(videoIdNumber % 10) + 1}`,
         username: `User ${videoIdNumber % 5}`,
       },
-      likeCount: 100 + videoIdNumber,
-      viewCount: 1000 + videoIdNumber * 10,
-      commentsCount: 10 + videoIdNumber,
+      like_count: 100 + videoIdNumber,
+      view_count: 1000 + videoIdNumber * 10,
+      comments_count: 10 + videoIdNumber,
     };
 
     return HttpResponse.json(mockVideo);
