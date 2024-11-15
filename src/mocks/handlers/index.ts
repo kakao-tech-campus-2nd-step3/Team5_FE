@@ -1,5 +1,21 @@
 import { AddHandler } from '@/pages/add/mocks';
 import { AutoHandler } from '@/pages/auto/mocks';
 import { FetchShortsHandler } from '@/pages/main/mocks';
+import {
+  FetchCommentsHandler,
+  PostCommentsHandler,
+  DeleteCommentHandler,
+  UpdateCommentHandler,
+  ViewShortsHandler,
+} from '@/pages/viewer/mocks';
 
-export const handlers = [...AutoHandler, ...FetchShortsHandler, ...AddHandler];
+export const handlers = [
+  ...AddHandler,
+  ...AutoHandler,
+  ...FetchShortsHandler,
+  ...ViewShortsHandler,
+  ...FetchCommentsHandler,
+  ...PostCommentsHandler,
+  ...DeleteCommentHandler,
+  ...UpdateCommentHandler,
+];

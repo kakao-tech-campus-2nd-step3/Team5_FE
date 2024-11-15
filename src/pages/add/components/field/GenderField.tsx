@@ -19,7 +19,7 @@ type GenderFieldProps = {
 };
 
 const GenderField = ({ form }: GenderFieldProps) => {
-  const genderOptions = ['남성', '여성'];
+  const genderOptions = ['남자', '여자'];
 
   return (
     <FormField

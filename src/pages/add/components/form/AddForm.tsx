@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { z } from 'zod';
@@ -20,10 +21,16 @@ const AddForm = () => {
       gender: '',
     },
   });
+  const navigate = useNavigate();
 
   function onSubmit(value: z.infer<typeof AddSchema>) {
-    postAddInfo(value);
-    console.log('Form submitted');
+    try {
+      postAddInfo(value);
+      navigate('/');
+    } catch (error) {
+      console.error('AddForm 요청 실패:', error);
+      alert('정보 추가에 실패했습니다.');
+    }
   }
 
   return (

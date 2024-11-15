@@ -1,0 +1,1 @@
+export { useFetchMyData } from './fetchMyData';

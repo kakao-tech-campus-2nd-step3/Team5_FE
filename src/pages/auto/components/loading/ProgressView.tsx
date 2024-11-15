@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
+import { useFetchTaskStatus } from '@/pages/auto/apis';
+
 import Loading from './Loading';
 
 const ProgressView = ({
@@ -9,38 +11,84 @@ const ProgressView = ({
 }: {
   setProcessState: (state: 'initial' | 'progress' | 'final') => void;
 }) => {
-  const [progress, setProgress] = useState<number>(20);
+  const [progress, setProgress] = useState<number>(0);
+  const [processMessage, setprocessMessage] = useState<string>('');
+  const task_id = sessionStorage.getItem('task_id');
+
+  const { data, refetch } = useFetchTaskStatus(task_id ?? ''); // 상태 요청
 
   useEffect(() => {
-    // 타이머 ID를 저장할 배열
-    const timers: NodeJS.Timeout[] = [];
+    const pollingInterval = setInterval(async () => {
+      if (task_id) {
+        const { data: refetchedData } = await refetch();
+        // console.log('Polling data:', refetchedData);
 
-    timers.push(
-      setTimeout(() => {
-        setProgress(70);
-      }, 700)
-    );
-
-    timers.push(
-      setTimeout(() => {
-        setProgress(100);
-      }, 1400)
-    );
+        if (refetchedData?.status === 'completed') {
+          sessionStorage.setItem('status', 'completed');
+          setProcessState('final');
+          clearInterval(pollingInterval);
+        } else if (refetchedData?.status === 'failed') {
+          sessionStorage.setItem('status', 'failed');
+          alert('데이터 추출에 실패했습니다. 다시 시도해주세요.');
+          setProcessState('initial');
+          clearInterval(pollingInterval);
+        } else {
+          sessionStorage.setItem('status', refetchedData?.status ?? '');
+          updateProgressBar(refetchedData?.status ?? '');
+        }
+      }
+    }, 5000);
 
     return () => {
-      timers.forEach((timer) => clearTimeout(timer));
+      clearInterval(pollingInterval);
     };
-  }, [setProcessState]);
+  }, [task_id, refetch, setProcessState]);
+
+  const updateProgressBar = (status: string) => {
+    switch (status) {
+      case 'started':
+        setProgress(10);
+        break;
+      case 'processing started':
+        setProgress(20);
+        break;
+      case 'downloading video':
+        setProgress(40);
+        break;
+      case 'resizing video':
+        setProgress(50);
+        break;
+      case 'adding subtitle':
+        setProgress(60);
+        break;
+      case 'extracting highlights':
+        setProgress(70);
+        break;
+      case 'saving video to S3':
+        setProgress(90);
+        break;
+      case 'completed':
+        setProgress(100);
+        break;
+      case 'failed':
+        setProgress(0);
+        break;
+      default:
+        break;
+    }
+    setprocessMessage(status);
+  };
 
   useEffect(() => {
-    if (progress === 100) {
-      setProcessState('final');
+    if (data) {
+      sessionStorage.setItem('status', data.status);
+      updateProgressBar(data.status);
     }
-  }, [progress, setProcessState]);
+  }, [data]);
 
   return (
     <LoadingContainer>
-      <Loading progress={progress} />
+      <Loading progress={progress} progressMessage={processMessage} />
     </LoadingContainer>
   );
 };

@@ -1,4 +1,4 @@
-import { fetchInstace } from '@/apis';
+import { fetchInstance } from '@/apis';
 
 export type AddInfoProps = {
   categories: string[];
@@ -15,12 +15,12 @@ export type AddInfoResponse = Omit<AddInfoProps, 'categories'> & {
   categories: Category[];
 };
 
-const postAddinfoPath = () => '/api/additional-info';
+const postAddInfoPath = () => '/api/additional-info';
 
 export const postAddInfo = async (
   info: AddInfoProps
 ): Promise<AddInfoResponse> => {
-  const response = await fetchInstace.post(postAddinfoPath(), info);
+  const response = await fetchInstance.patch(postAddInfoPath(), info);
 
   return response.data;
 };

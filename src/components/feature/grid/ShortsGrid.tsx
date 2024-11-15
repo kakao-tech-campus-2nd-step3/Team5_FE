@@ -3,38 +3,27 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-import { ShortsThumbnailCard } from '@/components';
+import { ShortsThumbnailCard, Spinner } from '@/components';
 
-import { fetchShortsByCategory, ShortsVideoProps } from '@/pages/main/apis/fetchShortsList.api';
+import { useFetchShortsByCategory } from '@/pages/main/apis/fetchShortsList';
 
 interface ShortsGridProps {
   categoryId: number;
 }
 
 const CARD_WIDTH = 210;
-const SLIDE_AMOUNT = CARD_WIDTH * 2;
+const SLIDE_AMOUNT = CARD_WIDTH * 3;
 
 const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
   const constraintsRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(0);
   const [maxPosition, setMaxPosition] = useState(0);
-  const [shortsData, setShortsData] = useState<ShortsVideoProps[]>([]);
 
-  useEffect(() => {
-    const loadShorts = async () => {
-      try {
-        const data = await fetchShortsByCategory({
-          categoryId,
-          page: 0,
-          size: 10,
-        });
-        setShortsData(data);
-      } catch (error) {
-        console.error('Error fetching shorts:', error);
-      }
-    };
-    loadShorts();
-  }, [categoryId]);
+  const {
+    data: shortsData = [],
+    isLoading,
+    isError,
+  } = useFetchShortsByCategory({ categoryId });
 
   useEffect(() => {
     if (constraintsRef.current) {
@@ -44,13 +33,23 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
     }
   }, [shortsData]);
 
-  const handlePrev = () => {
+  const handlePrev = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setPosition((prev) => Math.min(prev + SLIDE_AMOUNT, 0));
   };
 
-  const handleNext = () => {
+  const handleNext = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setPosition((prev) => Math.max(prev - SLIDE_AMOUNT, maxPosition));
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <div>Error loading shorts</div>;
+  }
 
   return (
     <SliderWrapper>
@@ -65,10 +64,10 @@ const ShortsGrid = ({ categoryId }: ShortsGridProps) => {
           {shortsData.map((short, index) => (
             <motion.div key={index} className='card-wrapper'>
               <ShortsThumbnailCard
-                videoId={short.videoId}
+                videoId={short.video_id}
                 image={{ src: short.thumbnail, alt: short.title }}
                 title={short.title}
-                timeAgo={short.createdAt}
+                timeAgo={short.created_at}
               />
             </motion.div>
           ))}
@@ -88,6 +87,7 @@ const SliderWrapper = styled.div`
   align-items: center;
   width: 100%;
   margin: 20px 0;
+  padding: 0 10px;
   position: relative;
   overflow: hidden;
 `;
@@ -101,7 +101,7 @@ const Slider = styled(motion.div)`
   display: flex;
   gap: 30px;
   .card-wrapper {
-    min-width: 180px;
+    min-width: ${CARD_WIDTH}px;
   }
 `;
 
