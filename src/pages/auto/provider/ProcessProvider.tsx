@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from 'react';
 
 // 타입 정의
 export type ProcessState = 'initial' | 'progress' | 'final';
@@ -19,7 +25,17 @@ export const useProcessContext = () => {
 };
 
 export const ProcessProvider = ({ children }: { children: ReactNode }) => {
-  const [processState, setProcessState] = useState<ProcessState>('initial');
+  const getInitialState = (): ProcessState => {
+    const savedState = sessionStorage.getItem('processState') as ProcessState;
+    return savedState || 'initial';
+  };
+
+  const [processState, setProcessState] =
+    useState<ProcessState>(getInitialState);
+
+  useEffect(() => {
+    sessionStorage.setItem('processState', processState);
+  }, [processState]);
 
   return (
     <ProcessContext.Provider value={{ processState, setProcessState }}>

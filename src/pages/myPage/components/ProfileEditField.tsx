@@ -39,14 +39,11 @@ const ProfileEditField = ({ form }: ProfileEditFieldProps) => {
                   </CommonUI.SelectTrigger>
                   <CommonUI.SelectContent>
                     <CommonUI.SelectGroup>
-                      <CommonUI.SelectItem value='남성'>
-                        남성
+                      <CommonUI.SelectItem value='남자'>
+                        남자
                       </CommonUI.SelectItem>
-                      <CommonUI.SelectItem value='여성'>
-                        여성
-                      </CommonUI.SelectItem>
-                      <CommonUI.SelectItem value='그 외'>
-                        그 외
+                      <CommonUI.SelectItem value='여자'>
+                        여자
                       </CommonUI.SelectItem>
                     </CommonUI.SelectGroup>
                   </CommonUI.SelectContent>
@@ -100,17 +97,17 @@ const ProfileEditField = ({ form }: ProfileEditFieldProps) => {
           name='category'
           render={({ field }) => (
             <CommonUI.FormItem>
-              <CommonUI.FormLabel>카테고리</CommonUI.FormLabel>
+              <CommonUI.FormLabel>선호 카테고리</CommonUI.FormLabel>
               <CommonUI.FormControl>
                 <Select
                   isMulti
                   options={options}
                   defaultValue={options.filter((option) =>
-                    field.value.includes(option.value)
+                    (field.value as string[]).includes(option.label)
                   )}
                   onChange={(selectedOptions) => {
                     field.onChange(
-                      selectedOptions.map((option) => option.value)
+                      selectedOptions.map((option) => option.label)
                     );
                   }}
                 />

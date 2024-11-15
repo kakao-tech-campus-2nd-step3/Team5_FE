@@ -7,7 +7,7 @@ const VideoManagement = () => {
     <>
       <SectionTitle>영상 관리</SectionTitle>
       <VideoSection>
-        <ShortsGrid />
+        <ShortsGrid categoryId={1} />
       </VideoSection>
     </>
   );
@@ -15,11 +15,14 @@ const VideoManagement = () => {
 
 export default VideoManagement;
 
-const SectionTitle = styled.h3`
-  font-size: 20px;
+const SectionTitle = styled.h2`
+  font-size: 24px;
   font-weight: bold;
   margin-top: 40px;
   margin-bottom: 20px;
 `;
 
-const VideoSection = styled.div``;
+const VideoSection = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+`;

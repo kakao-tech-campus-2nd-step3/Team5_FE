@@ -1,0 +1,64 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "createDefaultProgram": true
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-hooks",
+    "jsx-a11y",
+    "import",
+    "prettier"
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    },
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "no-param-reassign": ["error", { "props": false }],
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "react/prop-types": "off",
+    "prettier/prettier": "error",
+    "react/react-in-jsx-scope": "off",
+    "import/no-unresolved": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-console": "off",
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off",
+    "max-len": "off",
+    "no-mixed-operators": "off",
+    "no-multiple-empty-lines": "off",
+    "import/no-named-as-default": "off",
+    "jsx-a11y/heading-has-content": "off",
+    "jsx-a11y/media-has-caption": "off",
+    "@typescript-eslint/no-empty-object-type": "off",
+    "react/display-name": "off"
+  }
+}

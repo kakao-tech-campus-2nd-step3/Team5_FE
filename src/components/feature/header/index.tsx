@@ -1,6 +1,4 @@
-import { useState } from 'react';
-
-import ProfileMenu from '@/components/feature/menu/ProfileMenu';
+import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -11,9 +9,30 @@ import {
   Input,
   Button,
 } from '@/components';
+import ProfileMenu from '@/components/feature/menu/ProfileMenu';
+
+import { useFetchMyData } from '@/apis';
+
+import { BASE_URL } from '@/constants';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isLogin = Boolean(localStorage.getItem('accessToken'));
+  const { data } = useFetchMyData();
+
+  useEffect(() => {
+    if (data) {
+      sessionStorage.setItem('username', data.username);
+      sessionStorage.setItem('image_url', data.image_url);
+      sessionStorage.setItem('email', data.email);
+      sessionStorage.setItem('member_id', String(data.member_id));
+    }
+  }, [data]);
+
+  const GoogleLoginUrl = `${BASE_URL}/api/login`;
+  const google_login = () => {
+    window.open(GoogleLoginUrl, '_self');
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -33,16 +52,18 @@ const Header = () => {
           </BtnWrapper>
         </ChildWrapper>
 
-        <ChildWrapper onClick={toggleMenu}>
-          <Avatar>
-            <AvatarImage src='https://github.com/shadcn.png' alt='@shadcn' />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <Name>name</Name>
-          <Menu>
-            {isMenuOpen && <ProfileMenu />}
-          </Menu>
-        </ChildWrapper>
+        {isLogin ? (
+          <ChildWrapper onClick={toggleMenu}>
+            <Avatar>
+              <AvatarImage src={data?.image_url} alt='@shadcn' />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <Name>{data?.username}</Name>
+            <Menu>{isMenuOpen && <ProfileMenu />}</Menu>
+          </ChildWrapper>
+        ) : (
+          <Name onClick={google_login}>로그인</Name>
+        )}
       </Wrapper>
     </Container>
   );
@@ -61,9 +82,7 @@ const Container = styled.header`
 const Wrapper = styled.div`
   width: 1440px;
   height: 56px;
-
   background-color: #eeeded;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -92,6 +111,7 @@ const Name = styled.strong`
   margin-right: 5px;
   font-size: 16px;
   color: #757575;
+  cursor: pointer;
 `;
 
 const Menu = styled.div``;

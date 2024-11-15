@@ -39,3 +39,11 @@ export {
 export { Spinner } from './spinner';
 export { Textarea } from './textarea';
 export { LoadingView } from './view/LoadingView';
+export {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from './tooltip';
+export { default as StatusDot } from './status_dot';
+export { Skeleton } from './skeleton';

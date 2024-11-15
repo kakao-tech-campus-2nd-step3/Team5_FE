@@ -25,7 +25,7 @@ const ShortsThumbnailCard: React.FC<ShortsCardProps> = ({
 
   const handleShortsClick = () => {
     navigate(`/videos/${videoId}`);
-  }
+  };
 
   return (
     <Card onClick={handleShortsClick}>
@@ -49,6 +49,11 @@ const Card = styled.div`
   margin: 10px;
   padding-top: 10px;
   cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const Title = styled.h3`
