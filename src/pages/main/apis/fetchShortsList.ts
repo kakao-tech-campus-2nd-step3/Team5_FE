@@ -25,7 +25,7 @@ export const fetchShortsByCategory = async (
     params: {
       categoryId: params.categoryId,
       page: params.page ?? 0,
-      size: params.size ?? 100,
+      size: params.size ?? 30,
     },
   });
 
