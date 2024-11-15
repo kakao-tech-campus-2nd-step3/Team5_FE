@@ -17,7 +17,7 @@ const baseURL = isMSWEnvironment ? 'http://localhost:5173' : `${BASE_URL}`;
 
 export const createInstance = (config: AxiosRequestConfig): AxiosInstance => {
   const instance = axios.create({
-    timeout: 5000,
+    timeout: 10000,
     ...config,
     baseURL,
     headers: {

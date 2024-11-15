@@ -27,6 +27,11 @@ const ProgressView = ({
           sessionStorage.setItem('status', 'completed');
           setProcessState('final');
           clearInterval(pollingInterval);
+        } else if (refetchedData?.status === 'failed') {
+          sessionStorage.setItem('status', 'failed');
+          alert('데이터 추출에 실패했습니다. 다시 시도해주세요.');
+          setProcessState('initial');
+          clearInterval(pollingInterval);
         } else {
           sessionStorage.setItem('status', refetchedData?.status ?? '');
           updateProgressBar(refetchedData?.status ?? '');
@@ -64,6 +69,9 @@ const ProgressView = ({
         break;
       case 'completed':
         setProgress(100);
+        break;
+      case 'failed':
+        setProgress(0);
         break;
       default:
         break;

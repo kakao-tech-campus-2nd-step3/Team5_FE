@@ -2,43 +2,23 @@ import { fetchFastInstance } from '@/apis';
 
 export type hightlightSelectionRequestProps = {
   index: number;
-  fileName: string;
-  title: string;
-  memberId: number;
-  categoryId: number;
+  task_id: string;
 };
 
-// export type PythonDTO = {
-//   url: string;
-//   email: string;
-//   title: string;
-//   memberId: number;
-//   categoryId: number;
-// };
-
 export type hightlightSelectionResponseProps = {
-  videoId: number;
-  thumbnail: string;
-  title: string;
-  memberId: number;
-  createdAt: Date;
+  message: string;
+  video_id: number;
 };
 
 const postHighlightSelectionPath = () => '/select-highlight';
 
 export const postHighlightSelection = async ({
   index,
-  fileName,
-  title,
-  memberId,
-  categoryId,
+  task_id,
 }: hightlightSelectionRequestProps): Promise<hightlightSelectionResponseProps> => {
   const response = await fetchFastInstance.post(postHighlightSelectionPath(), {
     index,
-    fileName,
-    title,
-    memberId,
-    categoryId,
+    task_id,
   });
 
   return response.data;
