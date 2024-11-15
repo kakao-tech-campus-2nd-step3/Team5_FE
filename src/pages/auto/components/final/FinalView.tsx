@@ -6,12 +6,14 @@ import { Button, Spinner } from '@/components';
 
 import { fetchVideoExtract, postHighlightSelection } from '@/pages/auto/apis';
 import { InitBtn } from '@/pages/auto/components';
+import { useProcessContext } from '@/pages/auto/provider';
 
 import ConvertShorts from './ConvertShorts';
 
 const FinalView = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { setProcessState } = useProcessContext();
 
   const handleSelectVideo = (index: number) => {
     setSelectedIndex(index);
@@ -56,7 +58,9 @@ const FinalView = () => {
       anchor.download = 'video.mp4'; // 다운로드 파일명 설정
       anchor.click();
 
-      alert('비디오 업로드 성공');
+      alert('비디오 업로드 성공, 초기화면으로 이동합니다.');
+      setProcessState('initial');
+      window.location.href = '/';
     } catch (error) {
       console.error('Error uploading video:', error);
       alert('업로드 중 오류가 발생했습니다.');
