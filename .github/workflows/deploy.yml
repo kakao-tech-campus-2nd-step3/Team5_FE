@@ -2,7 +2,7 @@ name: Deploy to Amazon S3
 
 on:
   push:
-    branches: ['week11']
+    branches: ['Master']
 
 env:
   AWS_REGION: ap-northeast-2
