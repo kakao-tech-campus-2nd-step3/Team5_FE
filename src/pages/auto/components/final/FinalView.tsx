@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Button } from '@/components';
+import { Button, Spinner } from '@/components';
 
 import { fetchVideoExtract, postHighlightSelection } from '@/pages/auto/apis';
 import { InitBtn } from '@/pages/auto/components';
@@ -11,19 +11,10 @@ import ConvertShorts from './ConvertShorts';
 
 const FinalView = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [categoryId, setCategoryId] = useState<number | null>(null);
-  const [titles, setTitle] = useState<string | null>(null);
-
-  const handleSelectVideo = (
-    index: number,
-
-    title: string,
-    category_id: number
-  ) => {
+  const handleSelectVideo = (index: number) => {
     setSelectedIndex(index);
-    setCategoryId(category_id);
-    setTitle(title);
   };
 
   const handleUpload = async () => {
@@ -32,44 +23,45 @@ const FinalView = () => {
       return;
     }
 
-    const memberId = parseInt(sessionStorage.getItem('member_id') ?? '0', 10);
-    const title = titles ?? '';
-
-    // const pythonDto = {
-    //   url: sessionStorage.getItem('initialUrl') ?? '',
-    //   email,
-    //   title,
-    //   memberId,
-    //   categoryId: categoryId ?? 0,
-    // };
-
+    setIsLoading(true);
     try {
-      // console.log({ index: selectedIndex, s3Url: selectedUrl, pythonDto });
       const response = await postHighlightSelection({
         index: selectedIndex,
-        fileName: sessionStorage.getItem('task_id') ?? '',
-        title,
-        memberId,
-        categoryId: categoryId ?? 0,
+        task_id: sessionStorage.getItem('task_id') ?? '',
       });
 
-      const videoId = response.videoId;
+      alert('비디오 업로드 중입니다. 잠시만 기다려주세요.');
+
+      const videoId = response.video_id;
       console.log('Video ID:', videoId);
 
-      // videoId로 다운로드 URL 받기
-      const extractResponse = await fetchVideoExtract(videoId); // videoId를 string으로 변환하여 전달
+      // // Presigned URL을 통해 다운로드 링크 가져오기
+      const downloadUrl = await fetchVideoExtract(videoId);
+      if (!downloadUrl) {
+        throw new Error('Failed to fetch video download URL');
+      }
 
-      // URL을 통해 비디오 다운로드 (예시)
-      const link = document.createElement('a');
-      link.href = extractResponse;
-      link.download = 'video.mp4';
-      link.click();
+      console.log('Download URL:', downloadUrl);
+      // 새로운 창에서 다운로드
+      const downloadWindow = window.open('', '_blank');
+      if (!downloadWindow) {
+        alert('팝업 차단이 되어 있는 것 같습니다. 팝업 차단을 해제해주세요.');
+        return;
+      }
+
+      // 새로운 창에서 다운로드를 위한 <a> 태그 생성
+      const anchor = downloadWindow.document.createElement('a');
+      anchor.href = downloadUrl;
+      anchor.target = '_self'; // 새 창 내에서 동작하도록 설정
+      anchor.download = 'video.mp4'; // 다운로드 파일명 설정
+      anchor.click();
 
       alert('비디오 업로드 성공');
-      console.log('Response:', response);
     } catch (error) {
       console.error('Error uploading video:', error);
       alert('업로드 중 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false); // 로딩 완료
     }
   };
 
@@ -78,7 +70,7 @@ const FinalView = () => {
       <ConvertShorts onSelectVideo={handleSelectVideo} />
       <ButtonWrapper>
         <Button variant='default' type='button' onClick={handleUpload}>
-          추출하기 및 업로드
+          {isLoading ? <Spinner /> : '추출하기 및 업로드'}
         </Button>
         <InitBtn />
       </ButtonWrapper>
