@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-import type { ShortsCardProps } from '@/pages/viewer/components/ShortsCard';
+import { ShortsCardProps } from '@/pages/viewer/components/ShortsCard';
 
 import sampleVideo from '@/assets/Sample_video.mp4';
 
